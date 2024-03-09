@@ -18,6 +18,7 @@ const Grid = lazy(() => import("../views/ui/Grid"));
 const Tables = lazy(() => import("../views/ui/Tables"));
 const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
+const ProfileEdit = lazy(() => import("../views/ui/ProfileEdit"));
 
 /*****Routes******/
 
@@ -39,6 +40,7 @@ const ThemeRoutes = [
       { path: "/table", exact: true, element: <Tables /> },
       { path: "/forms", exact: true, element: <Forms /> },
       { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
+      { path: "/profile_edit", exact: true, element: <ProfileEdit /> },
     ],
   },
 ];
