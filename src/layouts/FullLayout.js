@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { Container } from "reactstrap";
+import { Suspense } from "react";
+import Loader from "./loader/Loader";
 
 const FullLayout = () => {
   return (
@@ -18,7 +20,9 @@ const FullLayout = () => {
           <Header />
           {/********Middle Content**********/}
           <Container className="p-4 wrapper" fluid>
-            <Outlet />
+            <Suspense fallback={<Loader />}>
+              <Outlet />
+            </Suspense>
           </Container>
         </div>
       </div>
