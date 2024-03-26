@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles.css";
-import _404_robot from "../assets/images/bg/404.png";
+import _404_robot from "../../assets/images/bg/404.png";
 import { useNavigate } from "react-router-dom";
 
 const Missing = () => {

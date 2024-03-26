@@ -39,9 +39,13 @@ const Login = () => {
       );
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.token;
-      const Role = response?.data?.adminUser.Role;
-      setAuth({ email, password, Role, accessToken });
-      console.log(Role + "<<<< Role"); // ! ___for_debugging_only_REMEMBER_TO_DELETE_LATER___
+      // const Role = response?.data?.adminUser.Role;
+      const Nom = response?.data?.adminUser.Nom;
+      const Prenom = response?.data?.adminUser.Prenom;
+      const _id = response?.data?.adminUser._id;
+      // setAuth({ _id, Nom, Prenom, Email : email, password, Role, accessToken });
+      setAuth({ _id, Nom, Prenom, Email : email,   accessToken });
+      // console.log(Role + "<<<< Role"); // ! ___for_debugging_only_REMEMBER_TO_DELETE_LATER___
       setEmail("");
       setPassword("");
       navigate(from, { replace: true });

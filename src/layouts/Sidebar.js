@@ -14,14 +14,19 @@ const navigation = [
     icon: "bi bi-bell",
   },
   {
-    title: "Etulisateurs",
+    title: "Utilisateurs",
     href: "/users",
     icon: "bi bi-people",
   },
   {
-    title: "Demondes",
+    title: "Demandes",
     href: "/experts_subs",
     icon: "bi bi-envelope-paper",
+  },
+  {
+    title: "Abonnements",
+    href: "/abonnements",
+    icon: "bi bi-file-diff",
   },
   {
     title: "Badges",
@@ -101,15 +106,6 @@ const Sidebar = () => {
               </Link>
             </NavItem>
           ))}
-          <Button
-            color="danger"
-            tag="a"
-            target="_blank"
-            className="mt-3"
-            href="https://www.wrappixel.com/templates/xtreme-react-redux-admin/?ref=33"
-          >
-            Upgrade To Pro
-          </Button>
         </Nav>
       </div>
     </div>

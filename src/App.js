@@ -147,12 +147,11 @@
 
 // export default App;
 
-import { Suspense } from "react";
 import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import FullLayout from "./layouts/FullLayout";
-import Loader from "./layouts/loader/Loader";
 import RequireAuth from "./components/RequireAuth";
+import FullLayout from "./layouts/FullLayout";
+import Subscriptions from "./views/ui/Subscriptions";
 
 const Starter = lazy(() => import("./views/Starter"));
 const About = lazy(() => import("./views/About"));
@@ -167,23 +166,27 @@ const Tables = lazy(() => import("./views/ui/Tables"));
 const Forms = lazy(() => import("./views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("./views/ui/Breadcrumbs"));
 const ProfileEdit = lazy(() => import("./views/ui/ProfileEdit"));
-const Unauthorized = lazy(() => import("./components/Unauthorized"));
+
 const Login = lazy(() => import("./views/Login"));
-const Missing = lazy(() => import("./components/404"));
+
+const Unauthorized = lazy(() =>
+  import("./components/unauthorized/Unauthorized")
+);
+const Missing = lazy(() => import("./components/missing/404"));
 
 const App = () => {
   return (
     <Routes>
-
-      <Route path="/" element={<FullLayout />}>
-        {/* <Route element={<RequireAuth allowedRoles={["Administrateur"]} />}> */}
-        <Route element={<RequireAuth allowedRoles={"Administrateur"} />}>
+      <Route element={<RequireAuth allowedRoles={"Administrateur"} />}>
+        <Route path="/" element={<FullLayout />}>
+          {/* <Route element={<RequireAuth allowedRoles={["Administrateur"]} />}> */}
           <Route path="/" element={<Starter />} />
           <Route path="/starter" element={<Starter />} />
           <Route path="/about" element={<About />} />
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/users" element={<Users />} />
           <Route path="/experts_subs" element={<ExpertsSubs />} />
+          <Route path="/abonnements" element={<Subscriptions />} />
           <Route path="/badges" element={<Badges />} />
           <Route path="/buttons" element={<Buttons />} />
           <Route path="/cards" element={<Cards />} />
@@ -195,10 +198,9 @@ const App = () => {
         </Route>
       </Route>
 
+      <Route path="/login" element={<Login />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
       <Route path="*" element={<Missing />} />
-      <Route path="/login" element={<Login />} />
-      
     </Routes>
   );
 };

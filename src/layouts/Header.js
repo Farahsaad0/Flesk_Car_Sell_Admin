@@ -15,16 +15,18 @@ import {
 } from "reactstrap";
 import { ReactComponent as LogoWhite } from "../assets/images/logos/xtremelogowhite.svg";
 import user1 from "../assets/images/users/user1.jpg";
-import AuthContext from "../context/AuthProvider";
+// import AuthContext from "../context/AuthProvider";
+import useLogout from "../hooks/useLogout";
 
 const Header = () => {
-  const { setAuth } = useContext(AuthContext);
+  // const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const deconnecter = useLogout();
 
   const logout = async () => {
     // if used in more components, this should be in context
     // axios to /logout endpoint
-    setAuth({});
+    await deconnecter();
     navigate("/");
   };
 

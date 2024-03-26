@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import {
   Card,
   Row,
@@ -11,35 +11,42 @@ import {
   FormGroup,
   Label,
   Input,
+  Alert,
 } from "reactstrap";
+import useAuth from "../../hooks/useAuth";
 
 const ProfileEdit = () => {
   const [adminInfo, setAdminInfo] = useState({
     Nom: "",
     Prenom: "",
     Email: "",
-    Password: "",
+    oldPassword: "",
+    newPassword: "",
   });
+  const axiosPrivate = useAxiosPrivate();
+
+  const [alert, setAlert] = useState({ type: "", message: "", visible: false });
+  const SUCCESS_MESSAGE = " Vos modifications ont été appliquées avec succès.";
+  const FAIL_MESSAGE =
+    " Une erreur s'est produite lors de la mise à jour. Veuillez réessayer plus tard.";
+
+  const { auth } = useAuth();
 
   useEffect(() => {
-    // Fetch admin user info when the component mounts
     fetchAdminInfo();
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchAdminInfo = async () => {
     try {
-      // Fetch admin user info from the backend API
-      const response = await axios.get(
-        "http://localhost:8000/getAdminUser/65ec53a26c449ebae3adbe71"
-      );
-      const adminData = response.data;
+      const adminData = auth;
 
       // Update state with admin user info
       setAdminInfo({
         Nom: adminData.Nom,
         Prenom: adminData.Prenom,
         Email: adminData.Email,
-        Password: "", // Exclude password for security reasons
+        oldPassword: "",
+        newPassword: "",
       });
     } catch (error) {
       console.error("Error fetching admin user info:", error);
@@ -53,8 +60,24 @@ const ProfileEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., update admin user info in the backend
-    // You can use axios or any other library to make a PUT request to update the admin user info
+    try {
+      // Make a PUT request to update admin user info
+      const response = await axiosPrivate.put(`/updateAdmin/${auth._id}`, adminInfo);
+      console.log(response.data);
+      setAlert({ type: "success", message: SUCCESS_MESSAGE, visible: true });
+      setAdminInfo(prevState => ({
+        ...prevState,
+        oldPassword: "", // Clear old password
+        newPassword: "", // Clear new password
+      }));
+    } catch (error) {
+      console.error("Error updating admin info:", error);
+      setAlert({ type: "danger", message: FAIL_MESSAGE, visible: true });
+    }
+  };
+
+  const handleAlertDismiss = () => {
+    setAlert({ ...alert, visible: false });
   };
 
   return (
@@ -66,6 +89,20 @@ const ProfileEdit = () => {
             Form Example
           </CardTitle>
           <CardBody>
+            {/* Render alert if visible */}
+            {alert.visible && (
+              <Alert color={alert.type} className="alert-dismissible fade show">
+                <strong>
+                  {alert.type === "success" ? "succès!" : "Erreur!"}
+                </strong>{" "}
+                {alert.message}
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleAlertDismiss}
+                ></button>
+              </Alert>
+            )}
             <Form onSubmit={handleSubmit}>
               <FormGroup>
                 <Label for="Nom">Nom</Label>
@@ -76,6 +113,7 @@ const ProfileEdit = () => {
                   type="text"
                   value={adminInfo.Nom}
                   onChange={handleInputChange}
+                  required
                 />
               </FormGroup>
               <FormGroup>
@@ -87,6 +125,7 @@ const ProfileEdit = () => {
                   type="text"
                   value={adminInfo.Prenom}
                   onChange={handleInputChange}
+                  required
                 />
               </FormGroup>
               <FormGroup>
@@ -98,14 +137,27 @@ const ProfileEdit = () => {
                   type="email"
                   value={adminInfo.Email}
                   onChange={handleInputChange}
+                  required
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="Password">mote de passe</Label>
+                <Label for="oldPassword">mot de passe</Label>
                 <Input
-                  id="Password"
-                  name="Password"
-                  placeholder="mote de passe"
+                  id="oldPassword"
+                  name="oldPassword"
+                  placeholder="mot de passe"
+                  type="password"
+                  value={adminInfo.Password}
+                  onChange={handleInputChange}
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="newPassword">Nouveau mot de passe</Label>
+                <Input
+                  id="newPassword"
+                  name="newPassword"
+                  placeholder="Nouveau mot de passe"
                   type="password"
                   value={adminInfo.Password}
                   onChange={handleInputChange}

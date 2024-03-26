@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Card, CardBody, CardTitle, CardSubtitle, Table } from "reactstrap";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import {
+  Card,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Table,
+  Button,
+} from "reactstrap";
 import ReactPaginate from "react-paginate";
 
 const Users = () => {
@@ -8,6 +15,7 @@ const Users = () => {
   const [pageNumber, setPageNumber] = useState(0); // Current page number
   const usersPerPage = 10; // Number of users to display per page
   const [totalPages, setTotalPages] = useState(0);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     fetchUsers();
@@ -15,12 +23,10 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8000/getAllUsers?page=${
-          pageNumber + 1
-        }&perPage=${usersPerPage}`
+      const response = await axiosPrivate.get(
+        `/getAllUsers?page=${pageNumber + 1}&perPage=${usersPerPage}`
       );
-      console.log("Response from API:", response.data);  // ! ___FOR_TEST_ONLY_REMEMBER_TO_DELETE_LATER___
+      console.log("Response from API:", response.data); // ! ___FOR_TEST_ONLY_REMEMBER_TO_DELETE_LATER___
       setUsers(response.data.users); // Set users data
       setTotalPages(response.data.totalPages); // Set total number of pages
     } catch (error) {
@@ -28,9 +34,19 @@ const Users = () => {
     }
   };
 
-    const handlePageClick = ({ selected }) => {
-      setPageNumber(selected);
-    };
+  const handlePageClick = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const blockUser = async (expertId) => {
+    try {
+      await axiosPrivate.put(`/users/${expertId}/block`);
+      // After approval, fetch updated pending experts list
+      fetchUsers();
+    } catch (error) {
+      console.error("Error approving expert:", error);
+    }
+  };
 
   return (
     <div>
@@ -65,25 +81,35 @@ const Users = () => {
                     )}
                   </td>
                   <td>{user.Role}</td>
+                  <td>
+                    <Button
+                      
+                      className={user.Statut !== "Bloqué" ? "btn" : "btn disabled"}
+                      color="danger"
+                      size="sm"
+                      onClick={() => blockUser(user._id)}
+                    >
+                      Blocker
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </Table>
           <nav aria-label="Page navigation ">
-            <ul class="pagination justify-content-center">
+            <ul className="pagination justify-content-center">
               <ReactPaginate
-                previousLabel={
-                  <li class="page-item">
-                    <a class="page-link">Previous</a>
-                  </li>
-                }
-                nextLabel={<a class="page-link">Next</a>}
+                breakLabel="..."
+                previousLabel={<div className="page-link">Previous</div>}
+                nextLabel={<div className="page-link">Next</div>}
                 pageCount={totalPages} // Total number of pages, calculate based on total users count and usersPerPage
                 onPageChange={handlePageClick}
                 containerClassName={"pagination "}
+                pageRangeDisplayed={2}
                 activeClassName={" active"}
                 pageClassName={"page-item"} // Style for inactive page numbers
                 pageLinkClassName={"page-link"} // Style for inactive page number links
+                renderOnZeroPageCount={null}
               />
             </ul>
           </nav>
