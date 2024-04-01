@@ -7,8 +7,13 @@ import {
   CardSubtitle,
   Table,
   Button,
+  FormGroup,
+  Input,
+  Label,
 } from "reactstrap";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router-dom";
+import { Switch } from "reactstrap";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -16,6 +21,7 @@ const Users = () => {
   const usersPerPage = 10; // Number of users to display per page
   const [totalPages, setTotalPages] = useState(0);
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -38,6 +44,21 @@ const Users = () => {
     setPageNumber(selected);
   };
 
+  const toggleBlocked = async (userId, blocked, e) => {
+    try {
+      e.stopPropagation()
+      if (blocked) {
+        await axiosPrivate.put(`/users/${userId}/unblock`);
+      } else {
+        await axiosPrivate.put(`/users/${userId}/block`);
+      }
+      // After approval, fetch updated pending experts list
+      fetchUsers();
+    } catch (error) {
+      console.error("Error toggling user status:", error);
+    }
+  };
+
   const blockUser = async (expertId) => {
     try {
       await axiosPrivate.put(`/users/${expertId}/block`);
@@ -46,6 +67,10 @@ const Users = () => {
     } catch (error) {
       console.error("Error approving expert:", error);
     }
+  };
+
+  const goToProfile = async (user) => {
+    navigate("/profile", { state: { user } });
   };
 
   return (
@@ -57,19 +82,20 @@ const Users = () => {
             Les utilisateurs
           </CardSubtitle>
 
-          <Table className="no-wrap mt-3 align-middle" responsive borderless>
+          <Table className="no-wrap mt-3 align-middle" responsive borderless hover>
             <thead>
               <tr>
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Status</th>
                 <th>Rôle</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr key={index} className="border-top">
-                  <td>
+                <tr key={index} className="border-top" >
+                  <td onClick={() => goToProfile(user)} >
                     {user.Nom} {user.Prenom}
                   </td>
                   <td>{user.Email}</td>
@@ -82,16 +108,32 @@ const Users = () => {
                   </td>
                   <td>{user.Role}</td>
                   <td>
+                    <FormGroup switch>
+                      <Input
+                        type="switch"
+                        id={`switch-${index}`}
+                        checked={user.Statut !== "Bloqué"}
+                        onChange={(e) =>
+                          toggleBlocked(user._id, user.Statut === "Bloqué", e)
+                        }
+                      />
+                      <Label for={`switch-${index}`} check>
+                        {user.Statut !== "Bloqué" ? "Actif" : "Inactif"}
+                      </Label>
+                    </FormGroup>
+                  </td>
+                  {/* <td>
                     <Button
-                      
-                      className={user.Statut !== "Bloqué" ? "btn" : "btn disabled"}
+                      className={
+                        user.Statut !== "Bloqué" ? "btn" : "btn disabled"
+                      }
                       color="danger"
                       size="sm"
                       onClick={() => blockUser(user._id)}
                     >
                       Blocker
                     </Button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

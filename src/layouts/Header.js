@@ -27,7 +27,7 @@ const Header = () => {
     // if used in more components, this should be in context
     // axios to /logout endpoint
     await deconnecter();
-    navigate("/");
+    navigate("/login");
   };
 
   const goToEditProfile = async () => {
@@ -45,7 +45,7 @@ const Header = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
   return (
-    <Navbar color="primary" dark expand="md">
+    <Navbar sticky="top" color="primary" dark expand="md">
       <div className="d-flex align-items-center">
         <NavbarBrand href="/" className="d-lg-none">
           <LogoWhite />

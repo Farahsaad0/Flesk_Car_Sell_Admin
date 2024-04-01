@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { Button, Row, Col, Table, Card, CardTitle, CardBody } from "reactstrap";
+import {
+  Button,
+  Row,
+  Col,
+  Table,
+  Card,
+  CardTitle,
+  CardBody,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
 import ReactPaginate from "react-paginate";
 
 const ExpertsSubs = () => {
@@ -18,9 +29,7 @@ const ExpertsSubs = () => {
   const fetchPendingExperts = async () => {
     try {
       const response = await axiosPrivate.get(
-        `/getPendingExperts?page=${
-          pageNumber + 1
-        }&perPage=${usersPerPage}`
+        `/getPendingExperts?page=${pageNumber + 1}&perPage=${usersPerPage}`
       );
       setPendingExperts(response?.data?.pendingExperts);
       setTotalPages(response?.data?.totalPages); // Set total number of pages
@@ -40,6 +49,20 @@ const ExpertsSubs = () => {
       fetchPendingExperts();
     } catch (error) {
       console.error("Error approving expert:", error);
+    }
+  };
+
+  const toggleBlocked = async (expertId, blocked) => {
+    try {
+      // if (blocked) {
+      //   await axiosPrivate.put(`/users/${expertId}/unblock`);
+      // } else {
+        await axiosPrivate.put(`/approuverExpert/${expertId}`);
+      // }
+      // After approval, fetch updated pending experts list
+      fetchPendingExperts();
+    } catch (error) {
+      console.error("Error toggling user status:", error);
     }
   };
 
@@ -81,14 +104,25 @@ const ExpertsSubs = () => {
                       <td>{PExpert.Email}</td>
                       <td>{PExpert.ExpertId && PExpert.ExpertId.spécialité}</td>
                       <td>
-                        <Button
-                          className="btn"
-                          color="success"
-                          size="sm"
-                          onClick={() => acceptExpert(PExpert.ExpertId._id)}
-                        >
-                          accepter
-                        </Button>
+                        <FormGroup switch>
+                          <Input
+                            type="switch"
+                            id={`switch-${index}`}
+                            checked={
+                              PExpert.Statut !== ("En attente" || "Rejeté")
+                            }
+                            onChange={() =>
+                              toggleBlocked(
+                                PExpert._id,
+                                PExpert.Statut === "Bloqué"
+                              )
+                            }
+                          />
+                          <Label for={`switch-${index}`} check>
+                            En attente
+                            {/* {PExpert.Statut !== "Bloqué" ? "Actif" : "Inactif"} */}
+                          </Label>
+                        </FormGroup>
                         {/* <Button
                           className="btn"
                           color="danger"
