@@ -45,36 +45,43 @@ const ExpertsSubs = () => {
   const acceptExpert = async (expertId) => {
     try {
       await axiosPrivate.put(`/approuverExpert/${expertId}`);
-      // After approval, fetch updated pending experts list
       fetchPendingExperts();
     } catch (error) {
       console.error("Error approving expert:", error);
     }
   };
 
-  const toggleBlocked = async (expertId, blocked) => {
+  const rejeterExpert = async (expertId) => {
     try {
-      // if (blocked) {
-      //   await axiosPrivate.put(`/users/${expertId}/unblock`);
-      // } else {
-        await axiosPrivate.put(`/approuverExpert/${expertId}`);
-      // }
-      // After approval, fetch updated pending experts list
+      await axiosPrivate.put(`/rejeterExpert/${expertId}`);
       fetchPendingExperts();
     } catch (error) {
-      console.error("Error toggling user status:", error);
+      console.error("Error rejecting expert:", error);
     }
   };
 
-  // const blockExpert = async (expertId) => {
+  // const toggleBlocked = async (expertId, blocked) => {
   //   try {
-  //     await axiosPrivate.put(`/users/${expertId}/block`);
-  //     // After approval, fetch updated pending experts list
+  //     if (blocked) {
+  //       await axiosPrivate.put(`/users/${expertId}/unblock`);
+  //     } else {
+  //       await axiosPrivate.put(`/users/${expertId}/block`);
+  //     }
+
   //     fetchPendingExperts();
   //   } catch (error) {
-  //     console.error("Error approving expert:", error);
+  //     console.error("Error toggling user status:", error);
   //   }
   // };
+
+  const blockExpert = async (expertId) => {
+    try {
+      await axiosPrivate.put(`/users/${expertId}/block`);
+      fetchPendingExperts();
+    } catch (error) {
+      console.error("Error approving expert:", error);
+    }
+  };
 
   return (
     <Row>
@@ -103,8 +110,8 @@ const ExpertsSubs = () => {
                       </td>
                       <td>{PExpert.Email}</td>
                       <td>{PExpert.ExpertId && PExpert.ExpertId.spécialité}</td>
-                      <td>
-                        <FormGroup switch>
+                      <td className="button-group">
+                        {/* <FormGroup switch>
                           <Input
                             type="switch"
                             id={`switch-${index}`}
@@ -120,17 +127,52 @@ const ExpertsSubs = () => {
                           />
                           <Label for={`switch-${index}`} check>
                             En attente
-                            {/* {PExpert.Statut !== "Bloqué" ? "Actif" : "Inactif"} */}
+                            {PExpert.Statut !== "Bloqué" ? "Actif" : "Inactif"}
                           </Label>
-                        </FormGroup>
-                        {/* <Button
+                        </FormGroup> */}
+                        <Button
+                          className="btn"
+                          color="success"
+                          size="sm"
+                          onClick={() => acceptExpert(PExpert.ExpertId._id)}
+                        >
+                          accepter
+                        </Button>
+                        <Button
+                          className="btn"
+                          color="warning"
+                          size="sm"
+                          onClick={() => rejeterExpert(PExpert.ExpertId._id)}
+                        >
+                          rejeter
+                        </Button>
+                        {/* <FormGroup switch>
+                          <Input
+                            type="switch"
+                            id={`switch-${index}`}
+                            checked={
+                              PExpert.Statut !== ("En attente" || "Rejeté")
+                            }
+                            onChange={() =>
+                              toggleBlocked(
+                                PExpert._id,
+                                PExpert.Statut === "Bloqué"
+                              )
+                            }
+                          />
+                          <Label for={`switch-${index}`} check>
+                            En attente
+                            {PExpert.Statut !== "Bloqué" ? "Actif" : "Inactif"}
+                          </Label>
+                        </FormGroup> */}
+                        <Button
                           className="btn"
                           color="danger"
                           size="sm"
                           onClick={() => blockExpert(PExpert.ExpertId._id)}
                         >
-                          accepter
-                        </Button> */}
+                          blocker
+                        </Button>
                       </td>
                     </tr>
                   ))
