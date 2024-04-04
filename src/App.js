@@ -168,6 +168,7 @@ const Forms = lazy(() => import("./views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("./views/ui/Breadcrumbs"));
 const ProfileEdit = lazy(() => import("./views/ui/ProfileEdit"));
 const UserProfile = lazy(() => import("./views/ui/Profile"));
+const SubscriptionForm = lazy(() => import("./views/ui/SubscriptionForm"));
 
 const Login = lazy(() => import("./views/Login"));
 
@@ -200,8 +201,10 @@ const App = () => {
             <Route path="/breadcrumbs" element={<Breadcrumbs />} />
             <Route path="/profile_edit" element={<ProfileEdit />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/addSubscription" element={<SubscriptionForm />} />
           </Route>
         </Route>
+        
       </Route>
 
       <Route path="/login" element={<Login />} />

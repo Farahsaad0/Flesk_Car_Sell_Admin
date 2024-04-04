@@ -118,7 +118,7 @@ const Users = () => {
                         }
                       />
                       <Label for={`switch-${index}`} check>
-                        {user.Statut !== "Bloqué" ? "Actif" : "Inactif"}
+                        {user.Statut !== "Bloqué" ? "Actif" : "blocker"}
                       </Label>
                     </FormGroup>
                   </td>
