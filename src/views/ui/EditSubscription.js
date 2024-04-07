@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
+  Alert,
   Card,
   CardBody,
   CardTitle,
@@ -11,21 +12,36 @@ import {
   Row,
 } from "reactstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useLocation } from "react-router-dom";
 
-const SubscriptionForm = () => {
+const EditSubscription = () => {
+  const location = useLocation();
+  const { id } = location.state || {};
+
   const [subscriptionData, setSubscriptionData] = useState({
     type: "",
     price: "",
     duration: "",
     features: [],
     isActive: true,
-    // themeColor: "",
   });
   const axiosPrivate = useAxiosPrivate();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    const fetchSubscription = async () => {
+      try {
+        const response = await axiosPrivate.get(`/subscription/${id}`);
+        setSubscriptionData(response.data);
+      } catch (error) {
+        setError("Failed to fetch subscription data.");
+      }
+    };
+    fetchSubscription();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,28 +56,16 @@ const SubscriptionForm = () => {
     setLoading(true);
     setError(null);
     try {
-      const featuresArray = subscriptionData.features
-        .split(",")
-        .map((feature) => feature.trim());
-
+      const featuresArray = subscriptionData.features.split(',').map(feature => feature.trim());
+      
       const updatedSubscriptionData = {
         ...subscriptionData,
-        features: featuresArray,
+        features: featuresArray
       };
-
-      await axiosPrivate.post("/subscription", updatedSubscriptionData);
-      console.log("Subscription data:", subscriptionData);
+      await axiosPrivate.put(`/subscription/${id}`, updatedSubscriptionData);
       setSuccess(true);
-      setSubscriptionData({
-        type: "",
-        price: "",
-        duration: "",
-        features: [],
-        isActive: true,
-        // themeColor: "",
-      });
     } catch (error) {
-      setError("Failed to create subscription. Please try again.");
+      setError("Failed to update subscription. Please try again.");
     }
     setLoading(false);
   };
@@ -72,7 +76,7 @@ const SubscriptionForm = () => {
         <Card>
           <CardTitle tag="h6" className="border-bottom p-3 mb-0">
             <i className="bi bi-bell me-2"> </i>
-            Ajouter un nouveau abonnement
+            Edit Subscription
           </CardTitle>
           <CardBody>
             <Form onSubmit={handleSubmit}>
@@ -83,7 +87,7 @@ const SubscriptionForm = () => {
                   name="type"
                   value={subscriptionData.type}
                   onChange={handleChange}
-                  placeholder="Type d'abonnement (exp: Gold, Silver, ...)"
+                  placeholder="Type of subscription (e.g., Gold, Silver, ...)"
                   type="text"
                 />
               </FormGroup>
@@ -116,21 +120,10 @@ const SubscriptionForm = () => {
                   name="features"
                   value={subscriptionData.features}
                   onChange={handleChange}
-                  placeholder="Enter features separated by commas"
+                  placeholder="Features"
                   type="text"
                 />
               </FormGroup>
-              {/* <FormGroup>
-                <Label for="themeColor">Theme Color</Label>
-                <Input
-                  id="themeColor"
-                  name="themeColor"
-                  value={subscriptionData.themeColor}
-                  onChange={handleChange}
-                  placeholder="Enter theme color"
-                  type="color"
-                />
-              </FormGroup> */}
               <button
                 type="submit"
                 className="btn btn-primary"
@@ -138,11 +131,15 @@ const SubscriptionForm = () => {
               >
                 {loading ? "Loading..." : "Submit"}
               </button>
-              {error && <p className="text-danger">{error}</p>}
+              {error && (
+                <Alert color="danger" className="mt-3">
+                  {error}
+                </Alert>
+              )}
               {success && (
-                <p className="text-success">
-                  Subscription created successfully!
-                </p>
+                <Alert color="success" className="mt-3">
+                  Subscription updated successfully!
+                </Alert>
               )}
             </Form>
           </CardBody>
@@ -152,4 +149,4 @@ const SubscriptionForm = () => {
   );
 };
 
-export default SubscriptionForm;
+export default EditSubscription;

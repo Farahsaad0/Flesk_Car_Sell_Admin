@@ -13,12 +13,16 @@ import {
 import user1 from "../../assets/images/users/user1.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
+import axios from "../../api/axios";
+import PostItem from "../../components/PostItem";
 
 const Profile = () => {
   const location = useLocation();
   const { user: initialUser } = location.state || {};
   const axiosPrivate = useAxiosPrivate();
   const [user, setUser] = useState(initialUser);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setUser(initialUser);
@@ -27,7 +31,7 @@ const Profile = () => {
   const fetchUser = async (userId) => {
     try {
       const response = await axiosPrivate.get(`/getUser/${userId}`);
-      setUser(response.data.user); // Set user data
+      setUser(response.data);
     } catch (error) {
       console.error("Error updating user info:", error);
     }
@@ -36,11 +40,33 @@ const Profile = () => {
   const blockUser = async (userId) => {
     try {
       await axiosPrivate.put(`/users/${userId}/block`);
-      fetchUser(userId); // Fetch updated user information from the database
+      fetchUser(userId);
     } catch (error) {
       console.error("Error blocking user:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const userId = user._id;
+        if (!userId) {
+          throw new Error("User Id is missing");
+        }
+
+        const response = await axios.get(`/getCarAdByUserId/${userId}`);
+
+        console.log(response.data);
+        setPosts(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user posts:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserPosts();
+  }, []);
 
   return (
     <div>
@@ -155,16 +181,25 @@ const Profile = () => {
           </Card>
         </Col>
       </Row>
-      <Row>
-        <Col>
           <Card>
             <CardBody>
-              NO ITEMS
+              {loading ? (
+                <div>Loading...</div>
+              ) : posts.length === 0 ? (
+                <div>No post ads found.</div>
+              ) : (
+                posts.map((post) => (
+                  <div
+                    key={post._id}
+                    className="mb-3 d-flex align-items-center justify-content-between"
+                  >
+                    <PostItem post={post} />
+                  </div>
+                ))
+              )}
               {/* // TODO: add cards of the user's announcements */}
             </CardBody>
           </Card>
-        </Col>
-      </Row>
     </div>
   );
 };
