@@ -6,35 +6,47 @@ import {
   CardTitle,
   CardSubtitle,
   Table,
-  Button,
   FormGroup,
   Input,
   Label,
+  Row,
+  Col,
 } from "reactstrap";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
-import { Switch } from "reactstrap";
+import { formatDistanceToNow } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [pageNumber, setPageNumber] = useState(0); // Current page number
-  const usersPerPage = 10; // Number of users to display per page
+  const [pageNumber, setPageNumber] = useState(0);
+  const [usersPerPage, setUsersPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState("JoinDate");
+  const [sortOrder, setSortOrder] = useState(-1);
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     fetchUsers();
-  }, [pageNumber]); // Re-fetch users when the page number changes
+  }, [pageNumber, searchTerm, sortField, sortOrder, filter, usersPerPage]);
 
   const fetchUsers = async () => {
     try {
       const response = await axiosPrivate.get(
-        `/getAllUsers?page=${pageNumber + 1}&perPage=${usersPerPage}`
+        `/getAllUsers?page=${
+          pageNumber + 1
+        }&perPage=${usersPerPage}&search=${searchTerm}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${filter}`
       );
-      console.log("Response from API:", response.data); // ! ___FOR_TEST_ONLY_REMEMBER_TO_DELETE_LATER___
-      setUsers(response.data.users); // Set users data
-      setTotalPages(response.data.totalPages); // Set total number of pages
+      setUsers(
+        response.data.users.map((user) => ({
+          ...user,
+          createdAt: new Date(user.JoinDate),
+        }))
+      ); // Convert JoinDate to Date object
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -44,28 +56,22 @@ const Users = () => {
     setPageNumber(selected);
   };
 
+  const handlePerPageChange = (e) => {
+    setUsersPerPage(parseInt(e.target.value)); // Parse the selected value to an integer
+    setPageNumber(0); // Reset page number when changing the number of users per page
+  };
+
   const toggleBlocked = async (userId, blocked, e) => {
     try {
-      e.stopPropagation()
+      e.stopPropagation();
       if (blocked) {
         await axiosPrivate.put(`/users/${userId}/unblock`);
       } else {
         await axiosPrivate.put(`/users/${userId}/block`);
       }
-      // After approval, fetch updated pending experts list
       fetchUsers();
     } catch (error) {
       console.error("Error toggling user status:", error);
-    }
-  };
-
-  const blockUser = async (expertId) => {
-    try {
-      await axiosPrivate.put(`/users/${expertId}/block`);
-      // After approval, fetch updated pending experts list
-      fetchUsers();
-    } catch (error) {
-      console.error("Error approving expert:", error);
     }
   };
 
@@ -82,20 +88,108 @@ const Users = () => {
             Les utilisateurs
           </CardSubtitle>
 
-          <Table className="no-wrap mt-3 align-middle" responsive borderless hover>
+          {/* Search and Filter */}
+          <FormGroup>
+            <Input
+              type="text"
+              placeholder="Search by name or email"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Row className="row-cols-lg-auto g-3 align-items-center">
+              <Col>
+                <Label for="exampleSelect">Filter by status</Label>
+                <Input
+                  type="select"
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="En attente">En attente</option>
+                  <option value="Approuvé">Approuvé</option>
+                  <option value="Rejeté">Rejeté</option>
+                  <option value="Bloqué">Bloqué</option>
+                </Input>
+              </Col>
+              <Col>
+                <Label for="perPageSelect">Users per page</Label>
+                <Input
+                  type="select"
+                  id="perPageSelect"
+                  value={usersPerPage}
+                  onChange={handlePerPageChange}
+                >
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={30}>30</option>
+                </Input>
+              </Col>
+            </Row>
+          </FormGroup>
+
+          {/* Users Table */}
+          <Table
+            className="no-wrap mt-3 align-middle"
+            responsive
+            borderless
+            hover
+          >
             <thead>
               <tr>
-                <th>Nom</th>
-                <th>Email</th>
+                <th
+                  onClick={() => {
+                    setSortField("Nom");
+                    setSortOrder(sortOrder === 1 ? -1 : 1);
+                  }}
+                >
+                  Nom
+                  {sortField === "Nom" && (
+                    <i
+                      className={`bi-chevron-${
+                        sortOrder === 1 ? "down" : "up"
+                      }`}
+                    ></i>
+                  )}
+                </th>
+                <th
+                  onClick={() => {
+                    setSortField("Email");
+                    setSortOrder(sortOrder === 1 ? -1 : 1);
+                  }}
+                >
+                  Email{" "}
+                  {sortField === "Email" && (
+                    <i
+                      className={`bi-chevron-${
+                        sortOrder === 1 ? "down" : "up"
+                      }`}
+                    ></i>
+                  )}
+                </th>
                 <th>Status</th>
                 <th>Rôle</th>
+                <th
+                  onClick={() => {
+                    setSortField("JoinDate");
+                    setSortOrder(sortOrder === 1 ? -1 : 1);
+                  }}
+                >
+                  Date de joint{" "}
+                  {sortField === "JoinDate" && (
+                    <i
+                      className={`bi-chevron-${
+                        sortOrder === -1 ? "down" : "up"
+                      }`}
+                    ></i>
+                  )}
+                </th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr key={index} className="border-top" >
-                  <td onClick={() => goToProfile(user)} >
+                <tr key={index} className="border-top">
+                  <td onClick={() => goToProfile(user)}>
                     {user.Nom} {user.Prenom}
                   </td>
                   <td>{user.Email}</td>
@@ -107,6 +201,10 @@ const Users = () => {
                     )}
                   </td>
                   <td>{user.Role}</td>
+                  <td>
+                    {formatDistanceToNow(user.createdAt, { locale: fr })}
+                  </td>{" "}
+                  {/* Display how long ago the account was created */}
                   <td>
                     <FormGroup switch>
                       <Input
@@ -122,35 +220,25 @@ const Users = () => {
                       </Label>
                     </FormGroup>
                   </td>
-                  {/* <td>
-                    <Button
-                      className={
-                        user.Statut !== "Bloqué" ? "btn" : "btn disabled"
-                      }
-                      color="danger"
-                      size="sm"
-                      onClick={() => blockUser(user._id)}
-                    >
-                      Blocker
-                    </Button>
-                  </td> */}
                 </tr>
               ))}
             </tbody>
           </Table>
+
+          {/* Pagination */}
           <nav aria-label="Page navigation ">
             <ul className="pagination justify-content-center">
               <ReactPaginate
                 breakLabel="..."
                 previousLabel={<div className="page-link">Previous</div>}
                 nextLabel={<div className="page-link">Next</div>}
-                pageCount={totalPages} // Total number of pages, calculate based on total users count and usersPerPage
+                pageCount={totalPages}
                 onPageChange={handlePageClick}
                 containerClassName={"pagination "}
                 pageRangeDisplayed={2}
                 activeClassName={" active"}
-                pageClassName={"page-item"} // Style for inactive page numbers
-                pageLinkClassName={"page-link"} // Style for inactive page number links
+                pageClassName={"page-item"}
+                pageLinkClassName={"page-link"}
                 renderOnZeroPageCount={null}
               />
             </ul>

@@ -181,25 +181,30 @@ const Profile = () => {
           </Card>
         </Col>
       </Row>
+      <Row>
+        <Col>
           <Card>
             <CardBody>
-              {loading ? (
-                <div>Loading...</div>
-              ) : posts.length === 0 ? (
-                <div>No post ads found.</div>
-              ) : (
-                posts.map((post) => (
-                  <div
-                    key={post._id}
-                    className="mb-3 d-flex align-items-center justify-content-between"
-                  >
-                    <PostItem post={post} />
-                  </div>
-                ))
-              )}
-              {/* // TODO: add cards of the user's announcements */}
+              <Row>
+                {loading ? (
+                  <div>Loading...</div>
+                ) : posts.length === 0 ? (
+                  <div>No post ads found.</div>
+                ) : (
+                  posts.map((post) => (
+                    <Col
+                      key={post._id}
+                      className="mb-3 d-flex align-items-center justify-content-between"
+                    >
+                      <PostItem post={post} />
+                    </Col>
+                  ))
+                )}
+              </Row>
             </CardBody>
           </Card>
+        </Col>
+      </Row>
     </div>
   );
 };

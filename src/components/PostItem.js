@@ -29,8 +29,8 @@ const PostItem = ({ post }) => {
 
   return (
     // <Row>
-    <Card sm="4" lg="4" xl="1" xxl="1">
-      <CardImg top width="100%" src={imageUrl} alt={photo} />
+    <Card sm="4" lg="4" xl="1" xxl="1" style={{ width: "fit-content" }}>
+      <CardImg top src={imageUrl} alt={photo} />
       <CardBody>
         <CardTitle className="text-center">{titre}</CardTitle>
         <CardText>{description}</CardText>
