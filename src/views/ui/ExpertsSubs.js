@@ -1,17 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import {
-  Button,
-  Row,
-  Col,
-  Table,
-  Card,
-  CardTitle,
-  CardBody,
-  FormGroup,
-  Input,
-  Label,
-} from "reactstrap";
+import { Button, Row, Col, Table, Card, CardTitle, CardBody } from "reactstrap";
 import ReactPaginate from "react-paginate";
 
 const ExpertsSubs = () => {
@@ -60,20 +49,6 @@ const ExpertsSubs = () => {
     }
   };
 
-  // const toggleBlocked = async (expertId, blocked) => {
-  //   try {
-  //     if (blocked) {
-  //       await axiosPrivate.put(`/users/${expertId}/unblock`);
-  //     } else {
-  //       await axiosPrivate.put(`/users/${expertId}/block`);
-  //     }
-
-  //     fetchPendingExperts();
-  //   } catch (error) {
-  //     console.error("Error toggling user status:", error);
-  //   }
-  // };
-
   const blockExpert = async (expertId) => {
     try {
       await axiosPrivate.put(`/users/${expertId}/block`);
@@ -111,25 +86,6 @@ const ExpertsSubs = () => {
                       <td>{PExpert.Email}</td>
                       <td>{PExpert.ExpertId && PExpert.ExpertId.spécialité}</td>
                       <td className="button-group">
-                        {/* <FormGroup switch>
-                          <Input
-                            type="switch"
-                            id={`switch-${index}`}
-                            checked={
-                              PExpert.Statut !== ("En attente" || "Rejeté")
-                            }
-                            onChange={() =>
-                              toggleBlocked(
-                                PExpert._id,
-                                PExpert.Statut === "Bloqué"
-                              )
-                            }
-                          />
-                          <Label for={`switch-${index}`} check>
-                            En attente
-                            {PExpert.Statut !== "Bloqué" ? "Actif" : "Inactif"}
-                          </Label>
-                        </FormGroup> */}
                         <Button
                           className="btn"
                           color="success"
@@ -146,30 +102,11 @@ const ExpertsSubs = () => {
                         >
                           rejeter
                         </Button>
-                        {/* <FormGroup switch>
-                          <Input
-                            type="switch"
-                            id={`switch-${index}`}
-                            checked={
-                              PExpert.Statut !== ("En attente" || "Rejeté")
-                            }
-                            onChange={() =>
-                              toggleBlocked(
-                                PExpert._id,
-                                PExpert.Statut === "Bloqué"
-                              )
-                            }
-                          />
-                          <Label for={`switch-${index}`} check>
-                            En attente
-                            {PExpert.Statut !== "Bloqué" ? "Actif" : "Inactif"}
-                          </Label>
-                        </FormGroup> */}
                         <Button
                           className="btn"
                           color="danger"
                           size="sm"
-                          onClick={() => blockExpert(PExpert.ExpertId._id)}
+                          onClick={() => blockExpert(PExpert._id)}
                         >
                           blocker
                         </Button>

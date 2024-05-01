@@ -49,7 +49,7 @@ const Subscriptions = () => {
                   onClick={() => goToAddSubscription()}
                   color="primary"
                 >
-                  Ajouter un abonnement
+                  Ajouter un plan de sponsorship
                 </Button>
               </CardBody>
             </Card>

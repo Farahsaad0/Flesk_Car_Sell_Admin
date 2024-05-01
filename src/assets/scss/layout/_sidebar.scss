@@ -1,6 +1,7 @@
 .sidebarArea {
   flex-shrink: 0;
   width: $sidebarWidth;
+  overflow-y: auto;
   background-color: $sidebarColor;
   .sidenav-bg:hover {
     background-color: $gray-100;

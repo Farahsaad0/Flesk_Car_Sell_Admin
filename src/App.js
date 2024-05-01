@@ -151,8 +151,8 @@ import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import RequireAuth from "./components/RequireAuth";
 import FullLayout from "./layouts/FullLayout";
-import Subscriptions from "./views/ui/Subscriptions";
 import PersistLogin from "./components/PersistLogin";
+import SupportTickets from "./views/ui/SupportTickets";
 
 const Starter = lazy(() => import("./views/Starter"));
 const About = lazy(() => import("./views/About"));
@@ -170,6 +170,7 @@ const ProfileEdit = lazy(() => import("./views/ui/ProfileEdit"));
 const UserProfile = lazy(() => import("./views/ui/Profile"));
 const SubscriptionForm = lazy(() => import("./views/ui/SubscriptionForm"));
 const EditSubscription = lazy(() => import("./views/ui/EditSubscription"));
+const Subscriptions = lazy(() => import("./views/ui/Subscriptions"));
 
 const Login = lazy(() => import("./views/Login"));
 
@@ -192,7 +193,7 @@ const App = () => {
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/users" element={<Users />} />
             <Route path="/experts_subs" element={<ExpertsSubs />} />
-            <Route path="/abonnements" element={<Subscriptions />} />
+            <Route path="/sponsor" element={<Subscriptions />} />
             <Route path="/badges" element={<Badges />} />
             <Route path="/buttons" element={<Buttons />} />
             <Route path="/cards" element={<Cards />} />
@@ -204,9 +205,9 @@ const App = () => {
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/addSubscription" element={<SubscriptionForm />} />
             <Route path="/editSubscription" element={<EditSubscription />} />
+            <Route path="/supportTickets" element={<SupportTickets />} />
           </Route>
         </Route>
-        
       </Route>
 
       <Route path="/login" element={<Login />} />

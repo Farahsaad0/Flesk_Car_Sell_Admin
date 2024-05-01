@@ -1,10 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import "./style.css";
+import useLogout from "../../hooks/useLogout";
 
 const Unauthorized = () => {
   const navigate = useNavigate();
+  const deconnecter = useLogout();
 
-  const goBack = () => navigate(-1);
+
+  const logout = async () => {
+    await deconnecter();
+    navigate(-1 || "/");
+  };
+  // const goBack = () => navigate(-1);
 
   return (
     // <section>
@@ -21,8 +28,8 @@ const Unauthorized = () => {
         <div className="message2">
           You tried to access a page you did not have prior authorization for.
         </div>
-        <button type="button" className="btn btn-primary" onClick={goBack}>
-          Go back
+        <button type="button" className="btn btn-primary" onClick={logout}>
+          Logout & go back
         </button>
       </div>
 

@@ -34,7 +34,17 @@ const SubscriptionItem = ({ subscription, refreshSubscriptions }) => {
         <div className="pricingTable-header">
           <i className="fa fa-adjust"></i>
           <div className="price-value">
-            ${subscription.price} <span className="month">par mois</span>
+            {new Intl.NumberFormat("en-TN", {
+              style: "currency",
+              currency: "TND",
+            }).format(subscription.price)}
+            <span className="month">
+              {new Intl.NumberFormat("en-TN", {
+                style: "currency",
+                currency: "TND",
+              }).format(subscription.price / subscription.duration)}
+              par jour
+            </span>
           </div>
         </div>
         <h3 className="heading">{subscription.type}</h3>

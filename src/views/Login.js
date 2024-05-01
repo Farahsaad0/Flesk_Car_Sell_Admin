@@ -42,16 +42,16 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        LOGIN_URL,
+        "/login",
         { email, password },
         { withCredentials: true }
       );
       console.log(JSON.stringify(response?.data));
       const accessToken = response?.data?.token;
       // const Role = response?.data?.adminUser.Role;
-      const Nom = response?.data?.adminUser.Nom;
-      const Prenom = response?.data?.adminUser.Prenom;
-      const _id = response?.data?.adminUser._id;
+      const Nom = response?.data?.User.Nom;
+      const Prenom = response?.data?.User.Prenom;
+      const _id = response?.data?.User._id;
       // setAuth({ _id, Nom, Prenom, Email : email, password, Role, accessToken });
       setAuth({ _id, Nom, Prenom, Email: email, accessToken });
       // console.log(Role + "<<<< Role"); // ! ___for_debugging_only_REMEMBER_TO_DELETE_LATER___

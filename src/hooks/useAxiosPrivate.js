@@ -26,6 +26,7 @@ const useAxiosPrivate = () => {
           prevRequest.sent = true;
           const newAccessToken = await refresh();
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          
           return axios_private(prevRequest);
         }
         return Promise.reject(error);

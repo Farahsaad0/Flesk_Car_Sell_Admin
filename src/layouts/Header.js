@@ -24,8 +24,6 @@ const Header = () => {
   const deconnecter = useLogout();
 
   const logout = async () => {
-    // if used in more components, this should be in context
-    // axios to /logout endpoint
     await deconnecter();
     navigate("/login");
   };

@@ -8,11 +8,11 @@ const navigation = [
     href: "/starter",
     icon: "bi bi-speedometer2",
   },
-  {
-    title: "Alert",
-    href: "/alerts",
-    icon: "bi bi-bell",
-  },
+  // {
+  //   title: "Alert",
+  //   href: "/alerts",
+  //   icon: "bi bi-bell",
+  // },
   {
     title: "Utilisateurs",
     href: "/users",
@@ -24,50 +24,55 @@ const navigation = [
     icon: "bi bi-envelope-paper",
   },
   {
-    title: "Abonnements",
-    href: "/abonnements",
+    title: "Sponsors",
+    href: "/sponsor",
     icon: "bi bi-file-diff",
   },
   {
-    title: "Badges",
-    href: "/badges",
-    icon: "bi bi-patch-check",
+    title: "Support Tickets",
+    href: "/supportTickets",
+    icon: "bi-bookmark",
   },
-  {
-    title: "Buttons",
-    href: "/buttons",
-    icon: "bi bi-hdd-stack",
-  },
-  {
-    title: "Cards",
-    href: "/cards",
-    icon: "bi bi-card-text",
-  },
-  {
-    title: "Grid",
-    href: "/grid",
-    icon: "bi bi-columns",
-  },
-  {
-    title: "Table",
-    href: "/table",
-    icon: "bi bi-layout-split",
-  },
-  {
-    title: "Forms",
-    href: "/forms",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "Breadcrumbs",
-    href: "/breadcrumbs",
-    icon: "bi bi-link",
-  },
-  {
-    title: "About",
-    href: "/about",
-    icon: "bi bi-people",
-  },
+  // {
+  //   title: "Badges",
+  //   href: "/badges",
+  //   icon: "bi bi-patch-check",
+  // },
+  // {
+  //   title: "Buttons",
+  //   href: "/buttons",
+  //   icon: "bi bi-hdd-stack",
+  // },
+  // {
+  //   title: "Cards",
+  //   href: "/cards",
+  //   icon: "bi bi-card-text",
+  // },
+  // {
+  //   title: "Grid",
+  //   href: "/grid",
+  //   icon: "bi bi-columns",
+  // },
+  // {
+  //   title: "Table",
+  //   href: "/table",
+  //   icon: "bi bi-layout-split",
+  // },
+  // {
+  //   title: "Forms",
+  //   href: "/forms",
+  //   icon: "bi bi-textarea-resize",
+  // },
+  // {
+  //   title: "Breadcrumbs",
+  //   href: "/breadcrumbs",
+  //   icon: "bi bi-link",
+  // },
+  // {
+  //   title: "About",
+  //   href: "/about",
+  //   icon: "bi bi-people",
+  // },
 ];
 
 const Sidebar = () => {
@@ -77,7 +82,7 @@ const Sidebar = () => {
   let location = useLocation();
 
   return (
-    <div className="p-3">
+    <div className="p-3" >
       <div className="d-flex align-items-center">
         <Logo />
         <span className="ms-auto d-lg-none">
@@ -89,7 +94,7 @@ const Sidebar = () => {
           ></Button>
         </span>
       </div>
-      <div className="pt-4 mt-2">
+      <div className="pt-4 mt-2" >
         <Nav vertical className="sidebarNav">
           {navigation.map((navi, index) => (
             <NavItem key={index} className="sidenav-bg">

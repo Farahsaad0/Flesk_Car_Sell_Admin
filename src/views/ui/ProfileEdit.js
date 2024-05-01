@@ -94,7 +94,7 @@ const ProfileEdit = () => {
               <Alert color={alert.type} className="alert-dismissible fade show">
                 <strong>
                   {alert.type === "success" ? "succès!" : "Erreur!"}
-                </strong>{" "}
+                </strong>
                 {alert.message}
                 <button
                   type="button"
