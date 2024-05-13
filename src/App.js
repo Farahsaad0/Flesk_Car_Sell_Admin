@@ -168,9 +168,9 @@ const Forms = lazy(() => import("./views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("./views/ui/Breadcrumbs"));
 const ProfileEdit = lazy(() => import("./views/ui/ProfileEdit"));
 const UserProfile = lazy(() => import("./views/ui/Profile"));
-const SubscriptionForm = lazy(() => import("./views/ui/SubscriptionForm"));
-const EditSubscription = lazy(() => import("./views/ui/EditSubscription"));
-const Subscriptions = lazy(() => import("./views/ui/Subscriptions"));
+const SponsorshipForm = lazy(() => import("./views/ui/SponsorshipForm"));
+const EditSponsorship = lazy(() => import("./views/ui/EditSponsorship"));
+const Sponsorships = lazy(() => import("./views/ui/Sponsorships"));
 
 const Login = lazy(() => import("./views/Login"));
 
@@ -193,7 +193,7 @@ const App = () => {
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/users" element={<Users />} />
             <Route path="/experts_subs" element={<ExpertsSubs />} />
-            <Route path="/sponsor" element={<Subscriptions />} />
+            <Route path="/sponsor" element={<Sponsorships />} />
             <Route path="/badges" element={<Badges />} />
             <Route path="/buttons" element={<Buttons />} />
             <Route path="/cards" element={<Cards />} />
@@ -203,8 +203,8 @@ const App = () => {
             <Route path="/breadcrumbs" element={<Breadcrumbs />} />
             <Route path="/profile_edit" element={<ProfileEdit />} />
             <Route path="/profile" element={<UserProfile />} />
-            <Route path="/addSubscription" element={<SubscriptionForm />} />
-            <Route path="/editSubscription" element={<EditSubscription />} />
+            <Route path="/addSponsorship" element={<SponsorshipForm />} />
+            <Route path="/editSponsorship" element={<EditSponsorship />} />
             <Route path="/supportTickets" element={<SupportTickets />} />
           </Route>
         </Route>

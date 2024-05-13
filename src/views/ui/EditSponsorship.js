@@ -14,11 +14,11 @@ import {
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useLocation } from "react-router-dom";
 
-const EditSubscription = () => {
+const EditSponsorship = () => {
   const location = useLocation();
   const { id } = location.state || {};
 
-  const [subscriptionData, setSubscriptionData] = useState({
+  const [sponsorshipData, setSponsorshipData] = useState({
     type: "",
     price: "",
     duration: "",
@@ -32,22 +32,33 @@ const EditSubscription = () => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const fetchSubscription = async () => {
+    const fetchSponsorship = async () => {
       try {
-        const response = await axiosPrivate.get(`/subscription/${id}`);
-        setSubscriptionData(response.data);
+        const response = await axiosPrivate.get(`/sponsorship/${id}`);
+        setSponsorshipData(response.data);
       } catch (error) {
-        setError("Failed to fetch subscription data.");
+        setError("Failed to fetch sponsorship data.");
       }
     };
-    fetchSubscription();
+    fetchSponsorship();
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSubscriptionData((prevData) => ({
+    setSponsorshipData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  const handleFeatureChange = (feature) => {
+    const updatedFeatures = sponsorshipData.features.includes(feature)
+      ? sponsorshipData.features.filter((f) => f !== feature)
+      : [...sponsorshipData.features, feature];
+
+    setSponsorshipData((prevData) => ({
+      ...prevData,
+      features: updatedFeatures,
     }));
   };
 
@@ -56,16 +67,10 @@ const EditSubscription = () => {
     setLoading(true);
     setError(null);
     try {
-      const featuresArray = subscriptionData.features.split(',').map(feature => feature.trim());
-      
-      const updatedSubscriptionData = {
-        ...subscriptionData,
-        features: featuresArray
-      };
-      await axiosPrivate.put(`/subscription/${id}`, updatedSubscriptionData);
+      await axiosPrivate.put(`/sponsorship/${id}`, sponsorshipData);
       setSuccess(true);
     } catch (error) {
-      setError("Failed to update subscription. Please try again.");
+      setError("Failed to update sponsorship. Please try again.");
     }
     setLoading(false);
   };
@@ -76,7 +81,7 @@ const EditSubscription = () => {
         <Card>
           <CardTitle tag="h6" className="border-bottom p-3 mb-0">
             <i className="bi bi-bell me-2"> </i>
-            Edit Subscription
+            Edit Sponsorship
           </CardTitle>
           <CardBody>
             <Form onSubmit={handleSubmit}>
@@ -85,9 +90,9 @@ const EditSubscription = () => {
                 <Input
                   id="type"
                   name="type"
-                  value={subscriptionData.type}
+                  value={sponsorshipData.type}
                   onChange={handleChange}
-                  placeholder="Type of subscription (e.g., Gold, Silver, ...)"
+                  placeholder="Type of sponsorship (e.g., Gold, Silver, ...)"
                   type="text"
                 />
               </FormGroup>
@@ -96,7 +101,7 @@ const EditSubscription = () => {
                 <Input
                   id="price"
                   name="price"
-                  value={subscriptionData.price}
+                  value={sponsorshipData.price}
                   onChange={handleChange}
                   placeholder="Price"
                   type="number"
@@ -107,7 +112,7 @@ const EditSubscription = () => {
                 <Input
                   id="duration"
                   name="duration"
-                  value={subscriptionData.duration}
+                  value={sponsorshipData.duration}
                   onChange={handleChange}
                   placeholder="Duration"
                   type="number"
@@ -115,14 +120,26 @@ const EditSubscription = () => {
               </FormGroup>
               <FormGroup>
                 <Label for="features">Features</Label>
-                <Input
-                  id="features"
-                  name="features"
-                  value={subscriptionData.features}
-                  onChange={handleChange}
-                  placeholder="Features"
-                  type="text"
-                />
+                <div>
+                  {[
+                    "Highlighted Listing",
+                    "Featured in Search Results",
+                    "Featured on Homepage",
+                    "Priority Support",
+                    "Extended Listing Duration",
+                  ].map((feature, index) => (
+                    <FormGroup check key={index}>
+                      <Label check>
+                        <Input
+                          type="checkbox"
+                          checked={sponsorshipData.features.includes(feature)}
+                          onChange={() => handleFeatureChange(feature)}
+                        />{" "}
+                        {feature}
+                      </Label>
+                    </FormGroup>
+                  ))}
+                </div>
               </FormGroup>
               <button
                 type="submit"
@@ -138,7 +155,7 @@ const EditSubscription = () => {
               )}
               {success && (
                 <Alert color="success" className="mt-3">
-                  Subscription updated successfully!
+                  Sponsorship updated successfully!
                 </Alert>
               )}
             </Form>
@@ -149,4 +166,4 @@ const EditSubscription = () => {
   );
 };
 
-export default EditSubscription;
+export default EditSponsorship;
