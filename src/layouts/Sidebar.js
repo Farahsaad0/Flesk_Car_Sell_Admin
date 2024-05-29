@@ -30,7 +30,7 @@ const navigation = [
   },
   {
     title: "Support Tickets",
-    href: "/supportTickets",
+    href: "/contact",
     icon: "bi-bookmark",
   },
   // {
