@@ -19,43 +19,80 @@ const PostItem = ({ post }) => {
     marque,
     modele,
     annee,
-    photo,
+    photos,
     sponsorship,
     date,
   } = post;
 
-  const imageUrl = `http://localhost:8000/images/${photo}`;
+  const imageUrl = `http://localhost:8000/images/${photos[0]}`;
   const formattedDate = new Date(date).toLocaleDateString();
 
   return (
-    // <Row>
-    <Card sm="4" lg="4" xl="1" xxl="1" style={{ width: "fit-content" }}>
-      <CardImg top src={imageUrl} alt={photo} />
-      <CardBody>
+    // <Col lg="4">
+    // <Card sm="4" lg="3" xl="1" xxl="1" style={{ width: "fit-content" }}>
+    <Card style={{ height: "100%" }}>
+      {/* <CardImg top src={imageUrl} alt={photos} /> */}
+      <div
+        className="car__img"
+        style={{
+          width: "100%",
+          height: 0,
+          paddingBottom: "100%",
+          position: "relative",
+          overflow: "hidden",
+          background: "#ddd",
+        }}
+      >
+        <img
+          src={imageUrl}
+          alt={photos}
+          className="w-100 h-100 position-absolute "
+          style={{ objectFit: "contain" }}
+        />
+      </div>
+      <CardBody
+        style={{
+          // position: "relative",
+          // height: "fit-content",
+        }}
+      >
         <CardTitle className="text-center">{titre}</CardTitle>
-        <CardText>{description}</CardText>
-        <h6 className="text-center mt-">Prix: {prix}</h6>
-        <div className="d-flex align-items-center justify-content-between mt-3 mb-4">
-          <span className="d-flex align-items-center gap-1">
-            <i className="ri-car-line"></i>mark & model: {marque} {modele}
-          </span>
-          <span className="d-flex align-items-center gap-1">
-            <i className="ri-settings-2-line"></i>anner: {annee}
-          </span>
-          {/* <span className="d-flex align-items-center gap-1">
+        <CardText style={{ minHeight: "fit-content" }}>
+          <div style={{ height: "3em", overflowY: "auto" }}>{description}</div>
+          <h6 className="text-center mt-">Prix: {prix}</h6>
+          <div
+            style={{ minHeight: "3.5rem" }}
+            className="d-flex align-items-center justify-content-between mt-3 mb-4"
+          >
+            <span className="d-flex align-items-center gap-1">
+              <i className="ri-car-line"></i>mark & model: {marque} {modele}
+            </span>
+            <span className="d-flex align-items-center gap-1">
+              <i className="ri-settings-2-line"></i>année: {annee}
+            </span>
+            {/* <span className="d-flex align-items-center gap-1">
             <i className="ri-timer-flash-line"></i> {sponsorship}
           </span> */}
-          <span className="d-flex align-items-center gap-1">
+            {/* <span className="d-flex align-items-center gap-1">
             <i className="ri-calendar-line"></i>date de publication:
             {formattedDate}
-          </span>
-        </div>
-        <Button className="w-50 car__item-btn car__btn-details">
-          <Link to={`/cars/${post._id}`}>Details </Link>
-        </Button>
+          </span> */}
+          </div>
+          <Link
+            to={`/cars/${post._id}`}
+            style={{
+              position: "relative",
+              paddingTop: "auto",
+            }}
+          >
+            <Button color="primary" className="w-50 b-0">
+              Details
+            </Button>
+          </Link>
+        </CardText>
       </CardBody>
     </Card>
-    // {/* </Row> */}
+    // {/* </Col> */}
   );
 };
 

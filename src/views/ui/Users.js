@@ -28,17 +28,26 @@ const Users = () => {
   const [sortField, setSortField] = useState("JoinDate");
   const [sortOrder, setSortOrder] = useState(-1);
   const [filter, setFilter] = useState("all");
+  const [role, setRole] = useState("all");
 
   useEffect(() => {
     fetchUsers();
-  }, [pageNumber, searchTerm, sortField, sortOrder, filter, usersPerPage]);
+  }, [
+    pageNumber,
+    searchTerm,
+    sortField,
+    sortOrder,
+    filter,
+    role,
+    usersPerPage,
+  ]);
 
   const fetchUsers = async () => {
     try {
       const response = await axiosPrivate.get(
         `/getAllUsers?page=${
           pageNumber + 1
-        }&perPage=${usersPerPage}&search=${searchTerm}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${filter}`
+        }&perPage=${usersPerPage}&search=${searchTerm}&sortField=${sortField}&sortOrder=${sortOrder}&filter=${filter}&role=${role}`
       );
       setUsers(
         response.data.users.map((user) => ({
@@ -90,12 +99,16 @@ const Users = () => {
 
           {/* Search and Filter */}
           <FormGroup>
-            <Input
-              type="text"
-              placeholder="Search by name or email"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <Row>
+              <Col className="my-3">
+                <Input
+                  type="text"
+                  placeholder="Search by name or email"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </Col>
+            </Row>
             <Row className="row-cols-lg-auto g-3 align-items-center">
               <Col>
                 <Label for="exampleSelect">Filter by status</Label>
@@ -109,6 +122,18 @@ const Users = () => {
                   <option value="Approuvé">Approuvé</option>
                   <option value="Rejeté">Rejeté</option>
                   <option value="Bloqué">Bloqué</option>
+                </Input>
+              </Col>
+              <Col>
+                <Label for="exampleSelect">Afficher sauf les</Label>
+                <Input
+                  type="select"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                >
+                  <option value="all">All</option>
+                  <option value="Expert">Expert</option>
+                  <option value="Utilisateur">Utilisateur</option>
                 </Input>
               </Col>
               <Col>
@@ -192,16 +217,16 @@ const Users = () => {
                   <td onClick={() => goToProfile(user)}>
                     {user.Nom} {user.Prenom}
                   </td>
-                  <td>{user.Email}</td>
-                  <td>
+                  <td onClick={() => goToProfile(user)}>{user.Email}</td>
+                  <td onClick={() => goToProfile(user)}>
                     {!user.Verified ? (
                       <span className="p-2 bg-danger rounded-circle d-inline-block ms-3"></span>
                     ) : (
                       <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>
                     )}
                   </td>
-                  <td>{user.Role}</td>
-                  <td>
+                  <td onClick={() => goToProfile(user)}>{user.Role}</td>
+                  <td onClick={() => goToProfile(user)}>
                     {formatDistanceToNow(user.createdAt, { locale: fr })}
                   </td>{" "}
                   {/* Display how long ago the account was created */}
@@ -230,8 +255,8 @@ const Users = () => {
             <ul className="pagination justify-content-center">
               <ReactPaginate
                 breakLabel="..."
-                previousLabel={<div className="page-link">Previous</div>}
-                nextLabel={<div className="page-link">Next</div>}
+                previousLabel={<div className="page-link" style={{textDecoration:"none"}}>Previous</div>}
+                nextLabel={<div className="page-link" style={{textDecoration:"none"}}>Next</div>}
                 pageCount={totalPages}
                 onPageChange={handlePageClick}
                 containerClassName={"pagination "}

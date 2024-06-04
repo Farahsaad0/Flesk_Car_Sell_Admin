@@ -53,11 +53,11 @@ const navigation = [
   //   href: "/grid",
   //   icon: "bi bi-columns",
   // },
-  // {
-  //   title: "Table",
-  //   href: "/table",
-  //   icon: "bi bi-layout-split",
-  // },
+  {
+    title: "Table",
+    href: "/table",
+    icon: "bi bi-layout-split",
+  },
   // {
   //   title: "Forms",
   //   href: "/forms",

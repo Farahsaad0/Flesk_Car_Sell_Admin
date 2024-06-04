@@ -17,8 +17,9 @@ const Missing = () => {
         <div className="text_content">
           <h1 className="text404">404!</h1>
           <h1>
-            Désolé mais la page que vous recherchez n'existe pas, ont été
-            supprimé, le nom a été changé ou est temporairement indisponible
+            Désolé, mais la page que vous recherchez n'existe pas, a été
+            supprimée, son nom a été changé, ou elle est temporairement
+            indisponible.
           </h1>
           <p>Veuillez revenir à la page précédente. </p>
           <button className="back_btn" onClick={goBack}>

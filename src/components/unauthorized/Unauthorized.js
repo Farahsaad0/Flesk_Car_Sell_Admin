@@ -6,10 +6,9 @@ const Unauthorized = () => {
   const navigate = useNavigate();
   const deconnecter = useLogout();
 
-
   const logout = async () => {
     await deconnecter();
-    navigate(-1 || "/");
+    navigate("/");
   };
   // const goBack = () => navigate(-1);
 

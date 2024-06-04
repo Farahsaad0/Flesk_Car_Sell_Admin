@@ -1,5 +1,9 @@
 import { useLocation } from "react-router-dom";
 import {
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
   Button,
   Card,
   CardBody,
@@ -9,6 +13,7 @@ import {
   Input,
   Label,
   Row,
+  Table,
 } from "reactstrap";
 import user1 from "../../assets/images/users/user1.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -17,12 +22,24 @@ import axios from "../../api/axios";
 import PostItem from "../../components/PostItem";
 
 const Profile = () => {
+  const [open, setOpen] = useState(1);
   const location = useLocation();
   const { user: initialUser } = location.state || {};
   const axiosPrivate = useAxiosPrivate();
   const [user, setUser] = useState(initialUser);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sentTransactions, setSentTransactions] = useState([]);
+  const [receivedTransactions, setReceivedTransactions] = useState([]);
+  const userId = user._id;
+
+  const toggle = (id) => {
+    if (open === id) {
+      setOpen();
+    } else {
+      setOpen(id);
+    }
+  };
 
   useEffect(() => {
     setUser(initialUser);
@@ -49,7 +66,6 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserPosts = async () => {
       try {
-        const userId = user._id;
         if (!userId) {
           throw new Error("User Id is missing");
         }
@@ -64,9 +80,32 @@ const Profile = () => {
         setLoading(false);
       }
     };
+    const fetchSentTransactions = async () => {
+      try {
+        const response = await axios.get(`/transactions/${userId}`);
+        setSentTransactions(response.data);
+      } catch (error) {
+        console.error("Error fetching sent transactions", error);
+      }
+    };
 
+    const fetchReceivedTransactions = async () => {
+      try {
+        const response = await axios.get(`/transactions/expert/${userId}`);
+        setReceivedTransactions(response.data);
+      } catch (error) {
+        console.error("Error fetching received transactions", error);
+      }
+    };
+
+    fetchSentTransactions();
+    fetchReceivedTransactions();
     fetchUserPosts();
-  }, []);
+  }, [userId]);
+
+  const imageUrl = user?.photo
+    ? `http://localhost:8000/images/${user.photo}`
+    : null;
 
   return (
     <div>
@@ -74,10 +113,10 @@ const Profile = () => {
         <Col sm="6" lg="6" xl="5" xxl="4">
           <Card>
             <CardBody className="text-center">
-              {user && (
+              {user._id && (
                 <>
                   <img
-                    src={user1}
+                    src={imageUrl}
                     alt="Profile"
                     className="img-fluid rounded-circle mb-3"
                     style={{ width: "150px" }}
@@ -85,7 +124,11 @@ const Profile = () => {
                   {/* <img src={user.profilePicture} alt="Profile" className="img-fluid rounded-circle mb-3" style={{ width: '150px' }} /> */}
                   <div>
                     <p>User ID: {user._id}</p>
-                    <p>Join Date: {user.joinDate || "jj/mm/aaaa"}</p>
+                    <p>
+                      Join Date:{" "}
+                      {new Date(user.createdAt).toLocaleDateString() ||
+                        "jj/mm/aaaa"}
+                    </p>
                   </div>
                   <Button
                     className={
@@ -183,27 +226,117 @@ const Profile = () => {
       </Row>
       <Row>
         <Col>
-          <Card>
-            <CardBody>
-              <Row>
-                {loading ? (
-                  <div>Loading...</div>
-                ) : posts.length === 0 ? (
-                  <div>No post ads found.</div>
-                ) : (
-                  posts.map((post) => (
-                    <Col
-                      key={post._id}
-                      className="mb-3 d-flex align-items-center justify-content-between"
-                    >
-                      <PostItem post={post} />
-                    </Col>
-                  ))
-                )}
-              </Row>
-            </CardBody>
-          </Card>
+          <Accordion open={open} toggle={toggle} className="card bg-dark mt-5">
+            <AccordionItem>
+              <AccordionHeader targetId="1">
+                Historique des transactions envoyées
+              </AccordionHeader>
+              <AccordionBody
+                accordionId="1"
+                style={{ backgroundColor: "white" }}
+              >
+                <Table bordered striped>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>
+                      <th>Montant</th>
+                      <th>Statut de paiement</th>
+                      <th>Bénéficiaire</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sentTransactions?.map((transaction, i) => (
+                      <tr key={transaction._id}>
+                        <th scope="row">{i + 1}</th>
+                        <td>{transaction.type}</td>
+                        <td>{transaction.amount}</td>
+                        <td>{transaction.paymentStatus}</td>
+                        <td>
+                          {transaction.recipient.Role === "Administrateur"
+                            ? "Flesk Car Sell"
+                            : `${transaction.recipient.Nom} ${transaction.recipient.Prenom}`}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </AccordionBody>
+            </AccordionItem>
+          </Accordion>
+          {user.Role === "Expert" && (
+            <Accordion
+              open={open}
+              toggle={toggle}
+              color="white"
+              className="card mt-5"
+            >
+              <AccordionItem>
+                <AccordionHeader targetId="2">
+                  Historique des transactions reçues
+                </AccordionHeader>
+                <AccordionBody
+                  accordionId="2"
+                  style={{ backgroundColor: "white" }}
+                >
+                  <Table bordered striped>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Montant</th>
+                        <th>Statut de paiement</th>
+                        <th>Expéditeur</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {receivedTransactions?.map((transaction, i) => (
+                        <tr key={transaction._id}>
+                          <th scope="row">{i + 1}</th>
+                          <td>{transaction.type}</td>
+                          <td>{transaction.amount}</td>
+                          <td>{transaction.paymentStatus}</td>
+                          <td>
+                            {transaction.sender.Nom} {transaction.sender.Prenom}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </AccordionBody>
+              </AccordionItem>
+            </Accordion>
+          )}
         </Col>
+      </Row>
+      <Row className="mt-5">
+        {/* <Col> */}
+        {/* <Card>
+        <CardBody> */}
+        {loading ? (
+          <div>Loading...</div>
+        ) : posts.length === 0 ? (
+          <Col>
+            <Card>
+              <CardBody>
+                Cet utilisateur n'a publié aucune annonce jusqu'à présent.
+              </CardBody>
+            </Card>
+          </Col>
+        ) : (
+          <>
+            {/* <Row sm="6" lg="8" xl="8" xxl="8" className="d-flex flex-wrap "> */}
+            {posts.map((post) => (
+              <Col key={post._id} sm="4" lg="6" xl="5" xxl="4" className="mb-3">
+                <PostItem post={post} />
+              </Col>
+            ))}
+            {/* </Row> */}
+          </>
+        )}
+        {/* </CardBody>
+      </Card> */}
+        {/* </Col> */}
       </Row>
     </div>
   );

@@ -73,6 +73,7 @@ const ExpertsSubs = () => {
                   <th>Nom</th>
                   <th>email</th>
                   <th>Spécialité</th>
+                  <th>document</th>
                   <th>action</th>
                 </tr>
               </thead>
@@ -84,7 +85,21 @@ const ExpertsSubs = () => {
                         {PExpert.Nom} {PExpert.Prenom}
                       </td>
                       <td>{PExpert.Email}</td>
-                      <td>{PExpert.ExpertId && PExpert.ExpertId.spécialité}</td>
+                      <td>{PExpert.ExpertId && PExpert.ExpertId.specialite}</td>
+                      <td>
+                        {PExpert.ExpertId.documentDeConfiance.map(
+                          (doc, index) => (
+                            <a
+                              href={`http://localhost:8000/documents/${doc}`}
+                              download={doc}
+                              title="Télécharger"
+                              target="_blank"
+                            >
+                              {doc}
+                            </a>
+                          )
+                        )}
+                      </td>
                       <td className="button-group">
                         <Button
                           className="btn"
