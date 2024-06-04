@@ -76,7 +76,7 @@ const SponsorshipForm = () => {
           <CardBody>
             <Form onSubmit={handleSubmit}>
               <FormGroup>
-                <Label for="type">Titre:</Label>
+                <Label for="type">Type:</Label>
                 <Input
                   id="type"
                   name="type"
@@ -87,7 +87,7 @@ const SponsorshipForm = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="price">Price:</Label>
+                <Label for="price">Prix:</Label>
                 <Input
                   id="price"
                   name="price"
@@ -98,7 +98,7 @@ const SponsorshipForm = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="duration">Duration:</Label>
+                <Label for="duration">La durée:</Label>
                 <Input
                   id="duration"
                   name="duration"
@@ -109,56 +109,46 @@ const SponsorshipForm = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="features">Features:</Label>
+                <Label for="features">Caractéristiques:</Label>
                 <div>
                   <FormGroup check >
                     <Label check>
                       <Input
                         type="checkbox"
-                        checked={sponsorshipData.features.includes("Highlighted Listing")}
-                        onChange={() => handleFeatureChange("Highlighted Listing")}
+                        checked={sponsorshipData.features.includes("Annonce mise en avant")}
+                        onChange={() => handleFeatureChange("Annonce mise en avant")}
                       />{" "}
-                      Highlighted Listing
+                      Annonce mise en avant
                     </Label>
                   </FormGroup>
                   <FormGroup check >
                     <Label check>
                       <Input
                         type="checkbox"
-                        checked={sponsorshipData.features.includes("Featured in Search Results")}
-                        onChange={() => handleFeatureChange("Featured in Search Results")}
+                        checked={sponsorshipData.features.includes("Mis en avant dans les résultats de recherche")}
+                        onChange={() => handleFeatureChange("Mis en avant dans les résultats de recherche")}
                       />{" "}
-                      Featured in Search Results
+                      Mis en avant dans les résultats de recherche
                     </Label>
                   </FormGroup>
                   <FormGroup check >
                     <Label check>
                       <Input
                         type="checkbox"
-                        checked={sponsorshipData.features.includes("Featured on Homepage")}
-                        onChange={() => handleFeatureChange("Featured on Homepage")}
+                        checked={sponsorshipData.features.includes("Mis en avant sur la page d'accueil")}
+                        onChange={() => handleFeatureChange("Mis en avant sur la page d'accueil")}
                       />{" "}
-                      Featured on Homepage
+                      Mis en avant sur la page d'accueil
                     </Label>
                   </FormGroup>
                   <FormGroup check >
                     <Label check>
                       <Input
                         type="checkbox"
-                        checked={sponsorshipData.features.includes("Priority Support")}
-                        onChange={() => handleFeatureChange("Priority Support")}
+                        checked={sponsorshipData.features.includes("Durée de publication prolongée")}
+                        onChange={() => handleFeatureChange("Durée de publication prolongée")}
                       />{" "}
-                      Priority Support
-                    </Label>
-                  </FormGroup>
-                  <FormGroup check >
-                    <Label check>
-                      <Input
-                        type="checkbox"
-                        checked={sponsorshipData.features.includes("Extended Listing Duration")}
-                        onChange={() => handleFeatureChange("Extended Listing Duration")}
-                      />{" "}
-                      Extended Listing Duration
+                      Durée de publication prolongée
                     </Label>
                   </FormGroup>
                   {/* Repeat similar FormGroup check inline for each feature */}
@@ -174,7 +164,7 @@ const SponsorshipForm = () => {
               {error && <p className="text-danger">{error}</p>}
               {success && (
                 <p className="text-success">
-                  Sponsorship created successfully!
+                  Sponsorship crée avec succés!
                 </p>
               )}
             </Form>

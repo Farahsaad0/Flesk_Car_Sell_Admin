@@ -75,25 +75,9 @@ const Header = () => {
         <Nav className="me-auto" navbar>
           <NavItem>
             <Link to="/starter" className="nav-link">
-              Starter
+              Statistique
             </Link>
           </NavItem>
-          <NavItem>
-            <Link to="/about" className="nav-link">
-              About
-            </Link>
-          </NavItem>
-          <UncontrolledDropdown inNavbar nav>
-            <DropdownToggle caret nav>
-              DD Menu
-            </DropdownToggle>
-            <DropdownMenu end>
-              <DropdownItem>Option 1</DropdownItem>
-              <DropdownItem>Option 2</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>Reset</DropdownItem>
-            </DropdownMenu>
-          </UncontrolledDropdown>
         </Nav>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle color="primary">
@@ -106,9 +90,9 @@ const Header = () => {
           </DropdownToggle>
           <DropdownMenu>
             {/* <DropdownItem header>actions:</DropdownItem> */}
-            <DropdownItem onClick={goToEditProfile}>Edit Profile</DropdownItem>
+            <DropdownItem onClick={goToEditProfile}>Modifier Profil</DropdownItem>
             <DropdownItem divider />
-            <DropdownItem onClick={logout}>Logout</DropdownItem>
+            <DropdownItem onClick={logout}>Déconnecter</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </Collapse>

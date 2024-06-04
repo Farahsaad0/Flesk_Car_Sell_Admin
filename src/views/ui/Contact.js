@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Card, CardTitle, CardBody } from "reactstrap";
-import axios from 'axios';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 import { useNavigate } from "react-router-dom";
 
 const ContactsPage = () => {
@@ -10,9 +11,10 @@ const ContactsPage = () => {
     fetchContacts();
   }, []);
 
+  const axiosPrivate = useAxiosPrivate();
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/contacts');
+      const response = await axiosPrivate.get('/contacts');
       setContacts(response.data); // Supposons que le backend renvoie un tableau d'objets contenant les contacts
     } catch (error) {
       console.error("Erreur lors de la récupération des contacts :", error);
@@ -23,10 +25,10 @@ const ContactsPage = () => {
   };
   return (
     <div>
-      <h2>Liste des Contacts</h2>
+      <h2>Liste des Contactes</h2>
       <Card>
         <CardTitle tag="h6" className="border-bottom p-3 mb-0">
-          Contacts
+          Contactes
         </CardTitle>
         <CardBody className="">
           <Table bordered hover>

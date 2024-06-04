@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Logo = () => {
   return (
-    <Link to="/">
-      <b>FLESK CAR SELL</b>
+    <Link  style={{textDecoration:"none"}} to="/">
+      <b style={{ fontSize:"1.6em", textDecoration:"none"}} >FLESK CAR SELL</b>
     </Link>
   );
 };
