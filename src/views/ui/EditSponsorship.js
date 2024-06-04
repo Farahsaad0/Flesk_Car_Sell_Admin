@@ -97,7 +97,7 @@ const EditSponsorship = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="price">Price</Label>
+                <Label for="price">Prix</Label>
                 <Input
                   id="price"
                   name="price"
@@ -108,7 +108,7 @@ const EditSponsorship = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="duration">Duration</Label>
+                <Label for="duration">Durée</Label>
                 <Input
                   id="duration"
                   name="duration"
@@ -119,14 +119,13 @@ const EditSponsorship = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="features">Features</Label>
+                <Label for="features">Caractéristiques</Label>
                 <div>
                   {[
-                    "Highlighted Listing",
-                    "Featured in Search Results",
-                    "Featured on Homepage",
-                    "Priority Support",
-                    "Extended Listing Duration",
+                    "Annonce mise en avant",
+                    "Mis en avant dans les résultats de recherche",
+                    "Mis en avant sur la page d'accueil",
+                    "Durée de publication prolongée",
                   ].map((feature, index) => (
                     <FormGroup check key={index}>
                       <Label check>
@@ -146,7 +145,7 @@ const EditSponsorship = () => {
                 className="btn btn-primary"
                 disabled={loading}
               >
-                {loading ? "Loading..." : "Submit"}
+                {loading ? "En cours..." : "Enregistrer"}
               </button>
               {error && (
                 <Alert color="danger" className="mt-3">
@@ -155,7 +154,7 @@ const EditSponsorship = () => {
               )}
               {success && (
                 <Alert color="success" className="mt-3">
-                  Sponsorship updated successfully!
+                  Sponsorship modifiée avec succés!
                 </Alert>
               )}
             </Form>

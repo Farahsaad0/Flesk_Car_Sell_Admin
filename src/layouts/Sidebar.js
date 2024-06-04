@@ -29,7 +29,7 @@ const navigation = [
     icon: "bi bi-file-diff",
   },
   {
-    title: "Support Tickets",
+    title: "boîte de réception",
     href: "/contact",
     icon: "bi-bookmark",
   },

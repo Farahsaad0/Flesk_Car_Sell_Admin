@@ -45,7 +45,7 @@ const Sponsorships = () => {
               >
                 <div>
                   <i className="bi bi-bell me-2"></i>
-                  Parameter de Sponsorships
+                  Gestion des Pack Sponsor
                 </div>
                 {/* <div
                   className="btn btn-sm mb-0 p-0"
