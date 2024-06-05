@@ -103,7 +103,7 @@ const Users = () => {
               <Col className="my-3">
                 <Input
                   type="text"
-                  placeholder="Search by name or email"
+                  placeholder="Recherche par nom ou email"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -111,13 +111,13 @@ const Users = () => {
             </Row>
             <Row className="row-cols-lg-auto g-3 align-items-center">
               <Col>
-                <Label for="exampleSelect">Filter by status</Label>
+                <Label for="exampleSelect">Filtrer par status</Label>
                 <Input
                   type="select"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
                 >
-                  <option value="all">All</option>
+                  <option value="all">Tous</option>
                   <option value="En attente">En attente</option>
                   <option value="Approuvé">Approuvé</option>
                   <option value="Rejeté">Rejeté</option>
@@ -137,7 +137,7 @@ const Users = () => {
                 </Input>
               </Col>
               <Col>
-                <Label for="perPageSelect">Users per page</Label>
+                <Label for="perPageSelect">Utilisateurs par page</Label>
                 <Input
                   type="select"
                   id="perPageSelect"
@@ -241,7 +241,7 @@ const Users = () => {
                         }
                       />
                       <Label for={`switch-${index}`} check>
-                        {user.Statut !== "Bloqué" ? "Actif" : "blocker"}
+                        {user.Statut !== "Bloqué" ? "Actif" : "bloqué"}
                       </Label>
                     </FormGroup>
                   </td>
@@ -255,8 +255,8 @@ const Users = () => {
             <ul className="pagination justify-content-center">
               <ReactPaginate
                 breakLabel="..."
-                previousLabel={<div className="page-link" style={{textDecoration:"none"}}>Previous</div>}
-                nextLabel={<div className="page-link" style={{textDecoration:"none"}}>Next</div>}
+                previousLabel={<div className="page-link" style={{textDecoration:"none"}}>Précédente</div>}
+                nextLabel={<div className="page-link" style={{textDecoration:"none"}}>suivante</div>}
                 pageCount={totalPages}
                 onPageChange={handlePageClick}
                 containerClassName={"pagination "}

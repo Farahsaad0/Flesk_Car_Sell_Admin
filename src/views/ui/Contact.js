@@ -25,10 +25,10 @@ const ContactsPage = () => {
   };
   return (
     <div>
-      <h2>Liste des Contactes</h2>
+      <h2>Liste des Contacts</h2>
       <Card>
         <CardTitle tag="h6" className="border-bottom p-3 mb-0">
-          Contactes
+          Contacts
         </CardTitle>
         <CardBody className="">
           <Table bordered hover>
