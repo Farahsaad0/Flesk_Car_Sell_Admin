@@ -83,7 +83,7 @@ const Profile = () => {
     const fetchSentTransactions = async () => {
       try {
         const response = await axios.get(`/transactions/${userId}`);
-        setSentTransactions(response.data);
+        setSentTransactions(response.data.transactions);
       } catch (error) {
         console.error("Error fetching sent transactions", error);
       }
@@ -92,7 +92,7 @@ const Profile = () => {
     const fetchReceivedTransactions = async () => {
       try {
         const response = await axios.get(`/transactions/expert/${userId}`);
-        setReceivedTransactions(response.data);
+        setReceivedTransactions(response.data.completedTransactions);
       } catch (error) {
         console.error("Error fetching received transactions", error);
       }

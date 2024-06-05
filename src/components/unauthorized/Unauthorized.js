@@ -27,7 +27,7 @@ const Unauthorized = () => {
         <div className="message2">
           You tried to access a page you did not have prior authorization for.
         </div>
-        <button type="button" className="btn btn-primary" onClick={logout}>
+        <button type="button" className="btn btn-primary unauth_button" onClick={logout}>
           Logout & go back
         </button>
       </div>
