@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   Accordion,
   AccordionBody,
@@ -24,14 +24,15 @@ import PostItem from "../../components/PostItem";
 const Profile = () => {
   const [open, setOpen] = useState(1);
   const location = useLocation();
-  const { user: initialUser } = location.state || {};
+  const { user: initialUser } = location?.state || {};
   const axiosPrivate = useAxiosPrivate();
   const [user, setUser] = useState(initialUser);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sentTransactions, setSentTransactions] = useState([]);
   const [receivedTransactions, setReceivedTransactions] = useState([]);
-  const userId = user._id;
+
+  const { userId } = useParams();
 
   const toggle = (id) => {
     if (open === id) {
@@ -41,9 +42,9 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    setUser(initialUser);
-  }, [initialUser]);
+  // useEffect(() => {
+  //   setUser(initialUser);
+  // }, [initialUser]);
 
   const fetchUser = async (userId) => {
     try {
@@ -63,23 +64,22 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchUserPosts = async () => {
-      try {
+  const fetchUserPosts = async () => {
+    try {
         if (!userId) {
-          throw new Error("User Id is missing");
+            throw new Error("User Id is missing");
         }
 
         const response = await axios.get(`/getCarAdByUserId/${userId}`);
-
         console.log(response.data);
         setPosts(response.data);
         setLoading(false);
-      } catch (error) {
+    } catch (error) {
         console.error("Error fetching user posts:", error);
         setLoading(false);
-      }
-    };
+    }
+};
+  useEffect(() => {
     const fetchSentTransactions = async () => {
       try {
         const response = await axios.get(`/transactions/${userId}`);
@@ -97,11 +97,27 @@ const Profile = () => {
         console.error("Error fetching received transactions", error);
       }
     };
-
+    fetchUser(userId);
     fetchSentTransactions();
     fetchReceivedTransactions();
     fetchUserPosts();
   }, [userId]);
+
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axiosPrivate.delete(`/carAds/${id}`);
+      console.log(response.data);
+      // toast.success("Votre annonce a été supprimée avec succès");
+      fetchUserPosts();
+    } catch (error) {
+      // toast.error(
+      //   "Un erreur s'est produite lors de la suppression de votre annonce"
+      // );
+      console.error("Error deleting car ad:", error);
+    }
+  };
+
 
   const imageUrl = user?.photo
     ? `http://localhost:8000/images/${user.photo}`
@@ -113,7 +129,7 @@ const Profile = () => {
         <Col sm="6" lg="6" xl="5" xxl="4">
           <Card>
             <CardBody className="text-center">
-              {user._id && (
+              {user?._id && (
                 <>
                   <img
                     src={imageUrl}
@@ -277,7 +293,7 @@ const Profile = () => {
               </AccordionBody>
             </AccordionItem>
           </Accordion>
-          {user.Role === "Expert" && (
+          {user?.Role === "Expert" && (
             <Accordion
               open={open}
               toggle={toggle}
@@ -355,7 +371,7 @@ const Profile = () => {
             {/* <Row sm="6" lg="8" xl="8" xxl="8" className="d-flex flex-wrap "> */}
             {posts.map((post) => (
               <Col key={post._id} sm="4" lg="6" xl="5" xxl="4" className="mb-3">
-                <PostItem post={post} />
+                <PostItem post={post} onDelete={() => handleDelete(post._id)} />
               </Col>
             ))}
             {/* </Row> */}
