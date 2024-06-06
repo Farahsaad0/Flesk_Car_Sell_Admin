@@ -203,7 +203,7 @@ const App = () => {
             <Route path="/forms" element={<Forms />} />
             <Route path="/breadcrumbs" element={<Breadcrumbs />} />
             <Route path="/profile_edit" element={<ProfileEdit />} />
-            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/profile/:userId" element={<UserProfile />} />
             <Route path="/addSponsorship" element={<SponsorshipForm />} />
             <Route path="/editSponsorship" element={<EditSponsorship />} />
             <Route path="/contact" element={<Contact />} />

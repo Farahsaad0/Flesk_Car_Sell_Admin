@@ -10,8 +10,10 @@ import {
   Row,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
-const PostItem = ({ post }) => {
+const PostItem = ({ post, onDelete }) => {
+  const axiosPrivate = useAxiosPrivate();
   const {
     titre,
     description,
@@ -24,6 +26,18 @@ const PostItem = ({ post }) => {
     date,
   } = post;
 
+//   const handleDelete = async (id) => {
+//     try {
+//         const response = await axiosPrivate.delete(`/carAds/${id}`);
+//         console.log(response.data);
+//         // Call onDeletePost to update the user's posts after deletion
+//         // refreshPosts();
+//         // Call onDeletePost to update the user's posts after deletion
+//         onDeletePost();
+//     } catch (error) {
+//         console.error("Error deleting car ad:", error);
+//     }
+// };
   const imageUrl = `http://localhost:8000/images/${photos[0]}`;
   const formattedDate = new Date(date).toLocaleDateString();
 
@@ -79,14 +93,14 @@ const PostItem = ({ post }) => {
           </span> */}
           </div>
           <Link
-            to={`/cars/${post._id}`}
+            // to={`/cars/${post._id}`}
             style={{
               position: "relative",
               paddingTop: "auto",
             }}
           >
-            <Button color="primary" className="w-50 b-0">
-              Details
+            <Button color="danger" className="w-100 b-0" onClick={onDelete}>
+            Supprimer
             </Button>
           </Link>
         </CardText>

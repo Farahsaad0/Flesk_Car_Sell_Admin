@@ -85,7 +85,7 @@ const Users = () => {
   };
 
   const goToProfile = async (user) => {
-    navigate("/profile", { state: { user } });
+    navigate(`/profile/${user._id}`);
   };
 
   return (
@@ -255,8 +255,16 @@ const Users = () => {
             <ul className="pagination justify-content-center">
               <ReactPaginate
                 breakLabel="..."
-                previousLabel={<div className="page-link" style={{textDecoration:"none"}}>Précédente</div>}
-                nextLabel={<div className="page-link" style={{textDecoration:"none"}}>suivante</div>}
+                previousLabel={
+                  <div className="page-link" style={{ textDecoration: "none" }}>
+                    Précédente
+                  </div>
+                }
+                nextLabel={
+                  <div className="page-link" style={{ textDecoration: "none" }}>
+                    suivante
+                  </div>
+                }
                 pageCount={totalPages}
                 onPageChange={handlePageClick}
                 containerClassName={"pagination "}
