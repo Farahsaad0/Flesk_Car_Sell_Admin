@@ -122,9 +122,9 @@ const SalesChart = () => {
   return (
     <Card>
       <CardBody>
-        <CardTitle tag="h5">Sales Summary</CardTitle>
+        <CardTitle tag="h5">Sommaire des Transactions</CardTitle>
         <CardSubtitle className="text-muted" tag="h6">
-          Yearly Sales Report
+        Revenus totaux des sponsorship packs et des consultations d'experts au fil du temps
         </CardSubtitle>
         <Chart
           type="area"

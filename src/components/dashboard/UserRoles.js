@@ -31,7 +31,7 @@ const RoleDonut = () => {
     <Card>
       <CardBody>
         <div className="donut">
-          <Chart options={options} series={series} type="donut" width="380" />
+          <Chart options={options} series={series} type="donut" width="355" />
         </div>
       </CardBody>
     </Card>

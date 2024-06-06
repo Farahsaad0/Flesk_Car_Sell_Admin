@@ -147,7 +147,7 @@ const ProjectTables = () => {
         <CardBody>
           <CardTitle tag="h5">Liste des utilisateurs</CardTitle>
           <CardSubtitle className="mb-2 text-muted" tag="h6">
-            Les utilisateurs
+          Les Utilisateurs les Plus Récents
           </CardSubtitle>
 
           <Table className="no-wrap mt-3 align-middle" responsive borderless>
