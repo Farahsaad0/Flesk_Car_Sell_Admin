@@ -171,6 +171,7 @@ const UserProfile = lazy(() => import("./views/ui/Profile"));
 const SponsorshipForm = lazy(() => import("./views/ui/SponsorshipForm"));
 const EditSponsorship = lazy(() => import("./views/ui/EditSponsorship"));
 const Sponsorships = lazy(() => import("./views/ui/Sponsorships"));
+const Transactions = lazy(() => import("./views/ui/Transactions"));
 
 const Login = lazy(() => import("./views/Login"));
 
@@ -207,6 +208,7 @@ const App = () => {
             <Route path="/editSponsorship" element={<EditSponsorship />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/SupportTicket" element={<SupportTickets />} />
+            <Route path="/transactions" element={<Transactions />} />
 
           </Route>
         </Route>

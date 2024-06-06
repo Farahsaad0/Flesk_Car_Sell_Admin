@@ -63,8 +63,6 @@
 
 // export default SalesChart;
 
-
-
 import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
 import Chart from "react-apexcharts";
@@ -76,6 +74,11 @@ const SalesChart = () => {
     options: {
       chart: {
         type: "area",
+        zoom: {
+          type: "x",
+          enabled: true,
+          autoScaleYaxis: true,
+        },
       },
       dataLabels: {
         enabled: false,
@@ -96,7 +99,7 @@ const SalesChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/transactions");
+        const response = await axios.get("/transactions/profit/stat");
         const { categories, series } = response.data;
 
         setChartData({

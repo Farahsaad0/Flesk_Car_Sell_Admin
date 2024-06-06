@@ -242,23 +242,36 @@ const Profile = () => {
                       <th>Type</th>
                       <th>Montant</th>
                       <th>Statut de paiement</th>
+                      <th>Date de paiement</th>
                       <th>Bénéficiaire</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {sentTransactions?.map((transaction, i) => (
-                      <tr key={transaction._id}>
-                        <th scope="row">{i + 1}</th>
-                        <td>{transaction.type}</td>
-                        <td>{transaction.amount}</td>
-                        <td>{transaction.paymentStatus}</td>
-                        <td>
-                          {transaction.recipient.Role === "Administrateur"
-                            ? "Flesk Car Sell"
-                            : `${transaction.recipient.Nom} ${transaction.recipient.Prenom}`}
+                    {sentTransactions.length > 0 ? (
+                      sentTransactions?.map((transaction, i) => (
+                        <tr key={transaction?._id}>
+                          <th scope="row">{i + 1}</th>
+                          <td>{transaction?.type}</td>
+                          <td>{transaction?.amount}</td>
+                          <td>{transaction?.paymentStatus}</td>
+                          <td>{transaction?.paymentDate}</td>
+                          <td>
+                            {transaction?.recipient?.Role === "Administrateur"
+                              ? "Flesk Car Sell"
+                              : `${transaction?.recipient?.Nom} ${transaction?.recipient?.Prenom}`}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6">
+                          <center>
+                            Votre historique de transactions est vide pour le
+                            moment. Rien à voir ici.
+                          </center>
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </Table>
               </AccordionBody>
@@ -286,21 +299,35 @@ const Profile = () => {
                         <th>Type</th>
                         <th>Montant</th>
                         <th>Statut de paiement</th>
+                        <th>Date de paiement</th>
                         <th>Expéditeur</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {receivedTransactions?.map((transaction, i) => (
-                        <tr key={transaction._id}>
-                          <th scope="row">{i + 1}</th>
-                          <td>{transaction.type}</td>
-                          <td>{transaction.amount}</td>
-                          <td>{transaction.paymentStatus}</td>
-                          <td>
-                            {transaction.sender.Nom} {transaction.sender.Prenom}
+                      {receivedTransactions.length > 0 ? (
+                        receivedTransactions?.map((transaction, i) => (
+                          <tr key={transaction?._id}>
+                            <th scope="row">{i + 1}</th>
+                            <td>{transaction?.type}</td>
+                            <td>{transaction?.amount}</td>
+                            <td>{transaction?.paymentStatus}</td>
+                            <td>{transaction?.paymentDate}</td>
+                            <td>
+                              {transaction?.sender?.Nom}{" "}
+                              {transaction?.sender?.Prenom}
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6">
+                            <center>
+                              Votre historique de transactions est vide pour le
+                              moment. Rien à voir ici.
+                            </center>
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </Table>
                 </AccordionBody>

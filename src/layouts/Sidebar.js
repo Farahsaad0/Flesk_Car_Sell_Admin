@@ -31,7 +31,12 @@ const navigation = [
   {
     title: "boîte de réception",
     href: "/contact",
-    icon: "bi-bookmark",
+    icon: "bi-inbox",
+  },
+  {
+    title: "Transactions",
+    href: "/transactions",
+    icon: "bi-file-earmark-text",
   },
   // {
   //   title: "Badges",
@@ -53,11 +58,11 @@ const navigation = [
   //   href: "/grid",
   //   icon: "bi bi-columns",
   // },
-  {
-    title: "Table",
-    href: "/table",
-    icon: "bi bi-layout-split",
-  },
+  // {
+  //   title: "Table",
+  //   href: "/table",
+  //   icon: "bi bi-layout-split",
+  // },
   // {
   //   title: "Forms",
   //   href: "/forms",

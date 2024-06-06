@@ -3,6 +3,9 @@ import SalesChart from "../components/dashboard/SalesChart";
 import Feeds from "../components/dashboard/Feeds";
 import ProjectTables from "../components/dashboard/ProjectTable";
 import TopCards from "../components/dashboard/TopCards";
+import RoleDonut from "../components/dashboard/UserRoles";
+import SponsorshipDonut from "../components/dashboard/CarAdSponsorship";
+import UserRegistrationChart from "../components/dashboard/UserRegistrationChart";
 import Blog from "../components/dashboard/Blog";
 import bg1 from "../assets/images/bg/bg1.jpg";
 import bg2 from "../assets/images/bg/bg2.jpg";
@@ -48,7 +51,7 @@ const Starter = () => {
   return (
     <div>
       {/***Top Cards***/}
-      <Row>
+      {/* <Row>
         <Col sm="6" lg="3">
           <TopCards
             bg="bg-light-success text-success"
@@ -85,14 +88,22 @@ const Starter = () => {
             icon="bi bi-bag"
           />
         </Col>
-      </Row>
+      </Row> */}
       {/***Sales & Feed***/}
       <Row>
         <Col sm="6" lg="6" xl="7" xxl="8">
           <SalesChart />
         </Col>
         <Col sm="6" lg="6" xl="5" xxl="4">
-          <Feeds />
+          {/* <Feeds /> */}
+          <RoleDonut />
+          <SponsorshipDonut/>
+        </Col>
+      </Row>
+      {/*** users chart ***/}
+      <Row>
+        <Col lg="12">
+          <UserRegistrationChart />
         </Col>
       </Row>
       {/***Table ***/}
@@ -102,7 +113,7 @@ const Starter = () => {
         </Col>
       </Row>
       {/***Blog Cards***/}
-      <Row>
+      {/* <Row>
         {BlogData.map((blg, index) => (
           <Col sm="6" lg="6" xl="3" key={index}>
             <Blog
@@ -114,7 +125,7 @@ const Starter = () => {
             />
           </Col>
         ))}
-      </Row>
+      </Row> */}
     </div>
   );
 };

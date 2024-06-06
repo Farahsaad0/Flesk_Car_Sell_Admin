@@ -130,7 +130,7 @@ const ExpertsSubs = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="4" className="table-active">
+                    <td colSpan="5" className="table-active">
                       <center>
                         Non, pas d'experts en attente. Ça doit être l'heure de
                         leur pause café ♨️!
