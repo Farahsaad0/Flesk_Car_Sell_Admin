@@ -160,7 +160,7 @@ const Profile = () => {
                     size="sm"
                     onClick={() => blockUser(user._id)}
                   >
-                    Blocker
+                    Bloquer
                   </Button>
                 </>
               )}

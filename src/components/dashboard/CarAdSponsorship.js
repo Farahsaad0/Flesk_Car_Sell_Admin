@@ -21,7 +21,7 @@ const SponsorshipDonut = () => {
         } = response.data;
 
         setOptions({
-          labels: ['Active Sponsored', 'Unsponsored'],
+          labels: ['Sponsor Activé', 'Sponsor inactivé'],
           tooltip: {
             y: {
               formatter: (value, { seriesIndex }) => {
