@@ -14,6 +14,7 @@ import {
   Alert,
 } from "reactstrap";
 import useAuth from "../../hooks/useAuth";
+import { toast } from "sonner";
 
 const ProfileEdit = () => {
   const [adminInfo, setAdminInfo] = useState({
@@ -34,7 +35,7 @@ const ProfileEdit = () => {
 
   useEffect(() => {
     fetchAdminInfo();
-  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchAdminInfo = async () => {
     try {
@@ -62,17 +63,22 @@ const ProfileEdit = () => {
     e.preventDefault();
     try {
       // Make a PUT request to update admin user info
-      const response = await axiosPrivate.put(`/updateAdmin/${auth._id}`, adminInfo);
+      const response = await axiosPrivate.put(
+        `/updateUserData/${auth._id}`,
+        adminInfo
+      );
       console.log(response.data);
-      setAlert({ type: "success", message: SUCCESS_MESSAGE, visible: true });
-      setAdminInfo(prevState => ({
+      // setAlert({ type: "success", message: SUCCESS_MESSAGE, visible: true });
+      toast.success(SUCCESS_MESSAGE);
+      setAdminInfo((prevState) => ({
         ...prevState,
         oldPassword: "", // Clear old password
         newPassword: "", // Clear new password
       }));
     } catch (error) {
       console.error("Error updating admin info:", error);
-      setAlert({ type: "danger", message: FAIL_MESSAGE, visible: true });
+      // setAlert({ type: "danger", message: FAIL_MESSAGE, visible: true });
+      alert.error(FAIL_MESSAGE);
     }
   };
 
@@ -147,7 +153,7 @@ const ProfileEdit = () => {
                   name="oldPassword"
                   placeholder="mot de passe"
                   type="password"
-                  value={adminInfo.Password}
+                  value={adminInfo.oldPassword}
                   onChange={handleInputChange}
                   required
                 />
@@ -159,7 +165,7 @@ const ProfileEdit = () => {
                   name="newPassword"
                   placeholder="Nouveau mot de passe"
                   type="password"
-                  value={adminInfo.Password}
+                  value={adminInfo.newPassword}
                   onChange={handleInputChange}
                 />
               </FormGroup>

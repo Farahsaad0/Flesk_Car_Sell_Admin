@@ -20,6 +20,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import PostItem from "../../components/PostItem";
+import { toast } from "sonner";
 
 const Profile = () => {
   const [open, setOpen] = useState(1);
@@ -49,7 +50,7 @@ const Profile = () => {
   const fetchUser = async (userId) => {
     try {
       const response = await axiosPrivate.get(`/getUser/${userId}`);
-      setUser(response.data);
+      setUser(response?.data);
     } catch (error) {
       console.error("Error updating user info:", error);
     }
@@ -59,26 +60,28 @@ const Profile = () => {
     try {
       await axiosPrivate.put(`/users/${userId}/block`);
       fetchUser(userId);
+      toast.success("L'utilisateur a été bloqué avec succès")
     } catch (error) {
       console.error("Error blocking user:", error);
+      toast.error("Un erreur s'est produite lors du blocage de l'utilisateur")
     }
   };
 
   const fetchUserPosts = async () => {
     try {
-        if (!userId) {
-            throw new Error("User Id is missing");
-        }
+      if (!userId) {
+        throw new Error("User Id is missing");
+      }
 
-        const response = await axios.get(`/getCarAdByUserId/${userId}`);
-        console.log(response.data);
-        setPosts(response.data);
-        setLoading(false);
+      const response = await axios.get(`/getCarAdByUserId/${userId}`);
+      console.log(response.data);
+      setPosts(response.data);
+      setLoading(false);
     } catch (error) {
-        console.error("Error fetching user posts:", error);
-        setLoading(false);
+      console.error("Error fetching user posts:", error);
+      setLoading(false);
     }
-};
+  };
   useEffect(() => {
     const fetchSentTransactions = async () => {
       try {
@@ -103,21 +106,19 @@ const Profile = () => {
     fetchUserPosts();
   }, [userId]);
 
-
   const handleDelete = async (id) => {
     try {
       const response = await axiosPrivate.delete(`/carAds/${id}`);
       console.log(response.data);
-      // toast.success("Votre annonce a été supprimée avec succès");
+      toast.success("L'annonce a été supprimée avec succès");
       fetchUserPosts();
     } catch (error) {
-      // toast.error(
-      //   "Un erreur s'est produite lors de la suppression de votre annonce"
-      // );
+      toast.error(
+        "Un erreur s'est produite lors de la suppression de l'annonce"
+      );
       console.error("Error deleting car ad:", error);
     }
   };
-
 
   const imageUrl = user?.photo
     ? `http://localhost:8000/images/${user.photo}`
@@ -135,14 +136,19 @@ const Profile = () => {
                     src={imageUrl}
                     alt="Profile"
                     className="img-fluid rounded-circle mb-3"
-                    style={{ width: "150px" }}
+                    style={{
+                      borderRadius: "50%",
+                      width: "200px",
+                      height: "200px",
+                      objectFit: "cover",
+                    }}
                   />
                   {/* <img src={user.profilePicture} alt="Profile" className="img-fluid rounded-circle mb-3" style={{ width: '150px' }} /> */}
                   <div>
                     <p>User ID: {user._id}</p>
                     <p>
                       Join Date:{" "}
-                      {new Date(user.createdAt).toLocaleDateString() ||
+                      {new Date(user.JoinDate).toLocaleDateString() ||
                         "jj/mm/aaaa"}
                     </p>
                   </div>
@@ -270,7 +276,7 @@ const Profile = () => {
                           <td>{transaction?.type}</td>
                           <td>{transaction?.amount}</td>
                           <td>{transaction?.paymentStatus}</td>
-                          <td>{transaction?.paymentDate}</td>
+                          <td>{new Date(transaction?.paymentDate).toLocaleDateString()}</td>
                           <td>
                             {transaction?.recipient?.Role === "Administrateur"
                               ? "Flesk Car Sell"

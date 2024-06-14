@@ -16,6 +16,7 @@ import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import { toast } from "sonner";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -58,6 +59,7 @@ const Users = () => {
       setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching users:", error);
+      toast.error("Un erreur s'est produite lors de la récupération des données des utilisateurs")
     }
   };
 
@@ -75,12 +77,15 @@ const Users = () => {
       e.stopPropagation();
       if (blocked) {
         await axiosPrivate.put(`/users/${userId}/unblock`);
+        toast.success("L'utilisateur a été bloqué avec succès")
       } else {
         await axiosPrivate.put(`/users/${userId}/block`);
+        toast.success("L'utilisateur a été débloqué avec succès")
       }
       fetchUsers();
     } catch (error) {
       console.error("Error toggling user status:", error);
+      toast.error("Un erreur s'est produite lors du blocage de l'utilisateur")
     }
   };
 
@@ -131,7 +136,7 @@ const Users = () => {
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 >
-                  <option value="all">All</option>
+                  <option value="all">Tous</option>
                   <option value="Expert">Expert</option>
                   <option value="Utilisateur">Utilisateur</option>
                 </Input>

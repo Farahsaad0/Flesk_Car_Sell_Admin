@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Button, Row, Col, Table, Card, CardTitle, CardBody } from "reactstrap";
 import ReactPaginate from "react-paginate";
+import { toast } from "sonner";
 
 const ExpertsSubs = () => {
   const [pendingExperts, setPendingExperts] = useState([]);
@@ -24,6 +25,7 @@ const ExpertsSubs = () => {
       setTotalPages(response?.data?.totalPages); // Set total number of pages
     } catch (error) {
       console.error("Error fetching pending experts:", error);
+      toast.error("Une erreur s'est produite lors de la récupération des données des demande d'etre Expert")
     }
   };
 

@@ -74,11 +74,6 @@ const SalesChart = () => {
     options: {
       chart: {
         type: "area",
-        zoom: {
-          type: "x",
-          enabled: true,
-          autoScaleYaxis: true,
-        },
       },
       dataLabels: {
         enabled: false,

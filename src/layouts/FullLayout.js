@@ -4,6 +4,7 @@ import Header from "./Header";
 import { Container } from "reactstrap";
 import { Suspense } from "react";
 import Loader from "./loader/Loader";
+import { Toaster } from "sonner";
 
 const FullLayout = () => {
   return (
@@ -23,6 +24,7 @@ const FullLayout = () => {
             <Suspense fallback={<Loader />}>
               <Outlet />
             </Suspense>
+            <Toaster richColors position="top-center" />
           </Container>
         </div>
       </div>

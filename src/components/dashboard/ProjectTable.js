@@ -147,7 +147,7 @@ const ProjectTables = () => {
         <CardBody>
           <CardTitle tag="h5">Liste des utilisateurs</CardTitle>
           <CardSubtitle className="mb-2 text-muted" tag="h6">
-          Les Utilisateurs les Plus Récents
+            Les Utilisateurs les Plus Récents
           </CardSubtitle>
 
           <Table className="no-wrap mt-3 align-middle" responsive borderless>
@@ -172,6 +172,9 @@ const ProjectTables = () => {
                         alt="avatar"
                         width="45"
                         height="45"
+                        style={{
+                          objectFit: "cover",
+                        }}
                       />
                     </div>
                   </td>
