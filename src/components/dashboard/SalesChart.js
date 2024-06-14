@@ -67,8 +67,11 @@ import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
 import Chart from "react-apexcharts";
 import axios from "../../api/axios";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const SalesChart = () => {
+  
+  const axiosPrivate = useAxiosPrivate();
   const [chartData, setChartData] = useState({
     series: [],
     options: {
@@ -94,7 +97,7 @@ const SalesChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/transactions/profit/stat");
+        const response = await axiosPrivate.get("/transactions/profit/stat");
         const { categories, series } = response.data;
 
         setChartData({

@@ -61,8 +61,18 @@ const ProfileEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     try {
-      // Make a PUT request to update admin user info
+      if (adminInfo.newPassword.length > 0) {
+        if (adminInfo.newPassword !== adminInfo.confirmPassword) {
+          toast.error("Les mots de passe ne correspondent pas.");
+        }
+        if (!passwordRegex.test(adminInfo.newPassword)) {
+          toast.error(
+            "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, une lettre minuscule et un chiffre."
+          );
+        }
+      }
       const response = await axiosPrivate.put(
         `/updateUserData/${auth._id}`,
         adminInfo
@@ -74,6 +84,7 @@ const ProfileEdit = () => {
         ...prevState,
         oldPassword: "", // Clear old password
         newPassword: "", // Clear new password
+        confirmPassword: "", // Clear confirm password
       }));
     } catch (error) {
       console.error("Error updating admin info:", error);
@@ -166,6 +177,17 @@ const ProfileEdit = () => {
                   placeholder="Nouveau mot de passe"
                   type="password"
                   value={adminInfo.newPassword}
+                  onChange={handleInputChange}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for="confirmPassword">Nouveau mot de passe</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Nouveau mot de passe"
+                  type="password"
+                  value={adminInfo.confirmPassword}
                   onChange={handleInputChange}
                 />
               </FormGroup>
