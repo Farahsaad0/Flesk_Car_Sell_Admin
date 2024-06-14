@@ -92,7 +92,7 @@ const Login = () => {
               </p>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Address Email </Form.Label>
+                  <Form.Label>Adresse Email </Form.Label>
                   <Form.Control
                     type="email"
                     placeholder="example@example.com"
@@ -120,7 +120,7 @@ const Login = () => {
                     type="checkbox"
                     id="persist"
                     onChange={togglePersist}
-                    label="Trust This Device"
+                    label=""
                     checked={persist}
                   />
                 </Form.Group>
