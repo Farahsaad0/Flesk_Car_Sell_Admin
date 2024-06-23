@@ -89,7 +89,8 @@ const ProfileEdit = () => {
     } catch (error) {
       console.error("Error updating admin info:", error);
       // setAlert({ type: "danger", message: FAIL_MESSAGE, visible: true });
-      alert.error(FAIL_MESSAGE);
+      // toast.error(FAIL_MESSAGE);
+      toast.error(error.response.data);
     }
   };
 
@@ -169,6 +170,7 @@ const ProfileEdit = () => {
                   required
                 />
               </FormGroup>
+              <div className="border  rounded-2 p-2">
               <FormGroup>
                 <Label for="newPassword">Nouveau mot de passe</Label>
                 <Input
@@ -181,16 +183,16 @@ const ProfileEdit = () => {
                 />
               </FormGroup>
               <FormGroup>
-                <Label for="confirmPassword">Nouveau mot de passe</Label>
+                <Label for="confirmPassword">Confirmer nouveau mot de passe</Label>
                 <Input
                   id="confirmPassword"
                   name="confirmPassword"
-                  placeholder="Nouveau mot de passe"
+                  placeholder="Confirmer nouveau mot de passe"
                   type="password"
                   value={adminInfo.confirmPassword}
                   onChange={handleInputChange}
                 />
-              </FormGroup>
+              </FormGroup></div>
               <Button className="mt-2 " color="success" type="submit">
                 Modifier
               </Button>

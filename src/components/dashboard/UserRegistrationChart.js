@@ -74,7 +74,7 @@ const UserRegistrationChart = () => {
 
         setSeries([
           {
-            name: "User Registrations",
+            name: "Utilisateurs Enregistrés",
             data: dates.map((date, index) => ({ x: date, y: counts[index] })),
           },
         ]);

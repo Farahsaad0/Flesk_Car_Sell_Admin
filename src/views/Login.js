@@ -120,7 +120,7 @@ const Login = () => {
                     type="checkbox"
                     id="persist"
                     onChange={togglePersist}
-                    label=""
+                    label="Rester connecté (24h)"
                     checked={persist}
                   />
                 </Form.Group>
